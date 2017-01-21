@@ -1,0 +1,10 @@
+*.swp
+*~
+*.log
+/*.js.map
+.DS_Store
+
+Thumbs.db
+/node_modules
+/coverage
+/dist
