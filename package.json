@@ -1,7 +1,7 @@
 {
   "name": "preact-habitat",
   "amdName": "PreactHabitat",
-  "version": "0.1.1",
+  "version": "0.1.12",
   "description": "A place for your happy widget in every DOM.",
   "main": "dist/habitat.js",
   "minified:main": "dist/habitat.min.js",
@@ -18,7 +18,7 @@
     "minify": "uglifyjs $npm_package_main -cm -o $npm_package_minified_main -p relative --in-source-map ${npm_package_main}.map --source-map ${npm_package_minified_main}.map",
     "lint": "eslint src/",
     "test": "jest",
-    "prepublish": "npm run lint && npm run test"
+    "prepublish": "npm run build"
   },
   "babel": {
     "presets": [
