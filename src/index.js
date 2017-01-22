@@ -34,6 +34,7 @@ const _getTagContent = (tag) => {
  */
 const render = (Widget) => {
   let root
+  let domLoaded = false
   // DOM element where main widget going to be rendered
   let habitatNode
   // this has to be outside ready state chage
@@ -43,7 +44,10 @@ const render = (Widget) => {
   // In case we need to clone the widget
   // All DOM has to be loaded
   document.onreadystatechange = function () {
-    if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    if (!domLoaded && (document.readyState === 'complete' ||
+     document.readyState === 'loaded' ||
+     document.readyState === 'interactive')) {
+      domLoaded = true
       habitatNode = widgetScriptTag.parentNode
       // render main widget
       preact.render(
