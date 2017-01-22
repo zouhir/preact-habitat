@@ -1,7 +1,13 @@
 import preact from 'preact'
 
-const CONF_ATTR = 'widget/config'
+// default <script> `type` attribute for cloned widgets
+const SCRIPT_ATTR = 'widget/config'
 
+/**
+ * [_getWidgetScriptTag internal widget to provide the currently executed script]
+ * @param  {document} document [Browser document object]
+ * @return {HTMLElement}     [script Element]
+ */
 const _getWidgetScriptTag = (document) => {
   return document.currentScript || ((() => {
     let scripts = document.getElementsByTagName('script')
@@ -9,6 +15,11 @@ const _getWidgetScriptTag = (document) => {
   }))()
 }
 
+/**
+ * [_getTagContent internal function gets the content of script tag]
+ * @param  {HTMLElement} tag [script tag]
+ * @return {Object}     [Valid JavaScript Object]
+ */
 const _getTagContent = (tag) => {
   try {
     return JSON.parse(tag.textContent)
@@ -17,43 +28,56 @@ const _getTagContent = (tag) => {
   }
 }
 
+/**
+ * [render the same Preact render function with some helpers]
+ * @param  {[Function / Componenr]} Widget [Preact component]
+ */
 const render = (Widget) => {
   let root
-  let habitatNode // the DOM element where our widget going to be rendered
+  // DOM element where main widget going to be rendered
+  let habitatNode
+  // this has to be outside ready state chage
+  // other than that we will not be able to know which script is getting executed
   const widgetScriptTag = _getWidgetScriptTag(document)
-  habitatNode = widgetScriptTag.parentNode
 
-  // render main widget
-  preact.render(
-    preact.h(
-      Widget
-    ),
-    habitatNode,
-    root
-  )
+  // In case we need to clone the widget
+  // All DOM has to be loaded
+  document.onreadystatechange = function () {
+    if (document.readyState === 'interactive' || document.readyState === 'complete') {
+      habitatNode = widgetScriptTag.parentNode
+      // render main widget
+      preact.render(
+        preact.h(
+          Widget
+        ),
+        habitatNode,
+        root
+      )
 
-  // check for clones
-  ;[].forEach.call(
-    document.querySelectorAll('script[type]'),
-      tag => {
-        if (tag.getAttribute('type') !== CONF_ATTR) {
-          return
-        }
-        let config = _getTagContent(tag)
-        if (!config || !config.clone) {
-          return null
-        }
-        if (config.clone === habitatNode.id) {
-          return preact.render(
-            preact.h(
-              Widget
-            ),
-            tag.parentNode,
-            root
-          )
-        }
-      }
-  )
+      // check for clones
+      ;[].forEach.call(
+        document.querySelectorAll('script[type]'),
+          tag => {
+            if (tag.getAttribute('type') !== SCRIPT_ATTR) {
+              return
+            }
+            let config = _getTagContent(tag)
+            if (!config || !config.clone) {
+              return null
+            }
+            if (config.clone === habitatNode.id) {
+              return preact.render(
+                preact.h(
+                  Widget
+                ),
+                tag.parentNode,
+                root
+              )
+            }
+          }
+      )
+    }
+  }
 }
 
 export { _getWidgetScriptTag, _getTagContent, render }
