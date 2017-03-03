@@ -16,13 +16,13 @@ If you have built a [Preact](https://preactjs.com/) component (eg: Video, login,
 
 ```bash
 
-npm install --save-dev preact-habitat
+npm install --save preact-habitat
 
 ```
 
 ## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 />  How to use
 
-#### Render your component using Habitat
+### Render your component using Habitat
 > ✨ NEW: Now habitat support multiple widget rendering✨
 
 ```js
@@ -37,7 +37,7 @@ habitatOne.render();
 habitatTwo.render();
 ```
 
-#### Set Build tool output library type to UMD
+### Set the build output library type to UMD
 
 usage example in Webpack:
 
@@ -49,7 +49,7 @@ output: {
 
 ```
 
-#### Inline Client Integration
+### Inline Client Integration
 
 *Assuming your bundle available on: `https://cdn.awesome/widget.js`*
 
@@ -60,16 +60,16 @@ output: {
 ```
 
 > ✨ NEW: Pass props! ✨
+
 ```html
 <div id="external-widget-place" data-prop-key="1x2uus88z" data-prop-theme="red">
   <script async src="https://cdn.awesome/widget.js"></script>
 </div>
 ```
 
-#### Mount multiple widgets (not inline)
+### Mount multiple widgets (not inline)
 
-1. make a `<script>` tag and make sure `type="widget/config"`
-2. add JSON config with the `clone` key of habitat script parent node `id` as a value
+> ✨ NEW: <script data-mount=""> ✨
 
 ```html
 <body>
@@ -87,18 +87,20 @@ output: {
 
 ```
 
-#### Prop Names Rules
+### Prop Names Rules
 Now habitat allow you to pass props from HTML to your preact components, here are the rules:
 
-- ###### starts with `data-prop-`
-- ###### all lower case `data-prop-videoid` === `this.prop.videoid`
-- ###### add dashes for camelCase 🐫 `data-prop-video-id` === `this.prop.videoId`
+- *starts with* `data-prop-`
+- •all lower case* `data-prop-videoid` === `this.prop.videoid`
+- *add dashes for camelCase* 🐫 `data-prop-video-id` === `this.prop.videoId`
 
 
-## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 /> Notes
+## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 /> Thank You!, But..
 
 1. Please make sure your widget size is reasonable, bloated and big size bundles make puppies sick 🐶 😔
-2. Feel free to fork, contribute or give it a star. Open an issue or [chat with me](https://twitter.com/_zouhir) if you have any questions.
+
+2. Feel free to fork, contribute or give it a 🌟. Open an issue or [chat with me](https://twitter.com/_zouhir) if you have any questions.
+
 
 ## License
 
