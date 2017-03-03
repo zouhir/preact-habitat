@@ -8,6 +8,12 @@
 
 Preact habitat is a 1.6kb module that will help you ship your Preact components \ widget to any world wide DOM page in a very easy and neat way.
 
+## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 /> Demos
+
+- *Simple Login* 🔑 [link](https://preact-habitat-inline.netlify.com/)
+
+- *Youtube Players* ▶️ [link](https://preact-habitat-youtube.netlify.com/)
+
 ## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 /> Use Case
 
 If you have built a [Preact](https://preactjs.com/) component (eg: Video, login, signup or booking components) and would like to bundle it and ship it to be loaded in multiple web applications, blogs without with mostly 0 or very minimal configuration from your package host, then preact-habitat is what you are after!
