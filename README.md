@@ -69,7 +69,7 @@ output: {
 
 ### Mount multiple widgets (not inline)
 
-> ✨ NEW: <script data-mount=""> ✨
+> ✨ NEW:  data-mount script attr ✨
 
 ```html
 <body>
@@ -84,7 +84,6 @@ output: {
 ...
 <script async src="https://cdn.awesome/widget.js" data-mount="awesome-widgets"></script>
 </body>
-
 ```
 
 ### Prop Names Rules
