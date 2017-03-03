@@ -1,87 +1,72 @@
-import preact from 'preact'
+import preact from 'preact';
 
-// default <script> `type` attribute for cloned widgets
-const SCRIPT_ATTR = 'widget/config'
+import {
+  _habitatElms,
+  _habitatsProps,
+  _getMountAttr,
+  _getWidgetScriptTag
+} from './lib/habitat';
 
-/**
- * [_getWidgetScriptTag internal widget to provide the currently executed script]
- * @param  {document} document [Browser document object]
- * @return {HTMLElement}     [script Element]
- */
-const _getWidgetScriptTag = (document) => {
-  return document.currentScript || ((() => {
-    let scripts = document.getElementsByTagName('script')
-    return scripts[scripts.length - 1]
-  }))()
-}
+const habitat = Widget => {
+  /**
+   * Helpers
+   */
+  let hasRendered = false; // flag to not render twice if document state has changed
+  let q = []; // q a function to execute when document is ready
 
-/**
- * [_getTagContent internal function gets the content of script tag]
- * @param  {HTMLElement} tag [script tag]
- * @return {Object}     [Valid JavaScript Object]
- */
-const _getTagContent = (tag) => {
-  try {
-    return JSON.parse(tag.textContent)
-  } catch (e) {
-    return null
-  }
-}
+  let widget = Widget;
+  let root = null;
+  let currentScript = _getWidgetScriptTag(); // get current script
 
-/**
- * [render the same Preact render function with some helpers]
- * @param  {[Function / Componenr]} Widget [Preact component]
- */
-const render = (Widget) => {
-  let root
-  let domLoaded = false
-  // DOM element where main widget going to be rendered
-  let habitatNode
-  // this has to be outside ready state chage
-  // other than that we will not be able to know which script is getting executed
-  const widgetScriptTag = _getWidgetScriptTag(document)
+  let mountTo = _getMountAttr(currentScript);
 
-  // In case we need to clone the widget
-  // All DOM has to be loaded
-  document.onreadystatechange = function () {
-    if (!domLoaded && (document.readyState === 'complete' ||
-     document.readyState === 'loaded' ||
-     document.readyState === 'interactive')) {
-      domLoaded = true
-      habitatNode = widgetScriptTag.parentNode
-      // render main widget
-      preact.render(
-        preact.h(
-          Widget
-        ),
-        habitatNode,
-        root
-      )
+  /**
+   * Regsiter event listener so Habitat render when DOM is ready / loaded
+   */
+  document.addEventListener(
+    'readystatechange',
+    () => {
+      if (!hasRendered && document.readyState !== 'loading') {
+        hasRendered = true;
+        q.forEach(function(fun) {
+          return fun();
+        });
+      }
+    },
+    false
+  );
 
-      // check for clones
-      ;[].forEach.call(
-        document.querySelectorAll('script[type]'),
-          tag => {
-            if (tag.getAttribute('type') !== SCRIPT_ATTR) {
-              return
-            }
-            let config = _getTagContent(tag)
-            if (!config || !config.clone) {
-              return null
-            }
-            if (config.clone === habitatNode.id) {
-              return preact.render(
-                preact.h(
-                  Widget
-                ),
-                tag.parentNode,
-                root
-              )
-            }
-          }
-      )
+  /**
+   * private _render function that will be queued if the DOM is not render
+   * and executed immeidatly if DOM is ready
+   */
+  let _render = () => {
+    let habitats = null;
+    if (mountTo) {
+      habitats = _habitatElms(mountTo);
+    } else {
+      habitats = [].concat(currentScript.parentNode);
     }
-  }
-}
+    habitats.forEach(elm => {
+      let hostNode = elm;
+      let props = _habitatsProps(elm) || {};
+      /**
+       * add resize function as a prop
+       */
+      props.habitatMediaQuery = () => _getHabitatSizeQuery(elm);
+      return preact.render(preact.h(widget, props), hostNode, root);
+    });
+  };
 
-export { _getWidgetScriptTag, _getTagContent, render }
+  let render = () => {
+    if (document.readyState !== 'loading') {
+      hasRendered = true;
+      return _render();
+    }
+    return q.push(_render);
+  };
+
+  return { render };
+};
+
+export default habitat;

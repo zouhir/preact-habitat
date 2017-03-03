@@ -6,11 +6,11 @@
 </h1>
 <br />
 
-Preact habitat is a 1kb module that will help you ship your Preact components \ widget to any world wide DOM page in a very easy and neat way.
+Preact habitat is a 1.6kb module that will help you ship your Preact components \ widget to any world wide DOM page in a very easy and neat way.
 
 ## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 /> Use Case
 
-If you have built a [Preact](https://preactjs.com/) component (eg: Video, login, booking components) and would like to bundle it and ship it to be loaded in other web applications, blogs, etc.. the preact-habitat is what are you looking for.
+If you have built a [Preact](https://preactjs.com/) component (eg: Video, login, signup or booking components) and would like to bundle it and ship it to be loaded in multiple web applications, blogs without with mostly 0 or very minimal configuration from your package host, then preact-habitat is what you are after!
 
 ## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 /> Installation
 
@@ -23,32 +23,35 @@ npm install --save-dev preact-habitat
 ## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 />  How to use
 
 #### Render your component using Habitat
+> ✨ NEW: Now habitat support multiple widget rendering✨
 
 ```js
-import { render } from 'preact-habitat';
-import WidgetAwesome from './components/WidgetAwesome'
+import habitat from 'preact-habitat';
+import WidgetAwesomeOne from './components/WidgetAwesome';
+import WidgetAwesomeTwo from './components/WidgetAwesome';
 
-render(WidgetAwesome);
+let habitatOne = habitat(WidgetAwesomeOne);
+let habitatTwo = habitat(WidgetAwesomeTwo);
 
+habitatOne.render();
+habitatTwo.render();
 ```
 
 #### Set Build tool output library type to UMD
 
-example in Webpack:
+usage example in Webpack:
 
 ```js
-
 output: {
-  ....
+  ...
   libraryTarget: 'umd'
 }
 
 ```
 
-#### Host HTML integration
+#### Inline Client Integration
 
-Now your widget is ready and assuming it's on your CDN and your URL is: `https://cdn.awesome/widget.js`
-This is how easy it is to integrate in the host DOM
+*Assuming your bundle available on: `https://cdn.awesome/widget.js`*
 
 ```html
 <div id="external-widget-place">
@@ -56,34 +59,41 @@ This is how easy it is to integrate in the host DOM
 </div>
 ```
 
-The snippet above will load the Preact component you have built inside a `div` with `external-widget-place` as id which you can position and style however you want.
+> ✨ NEW: Pass props! ✨
+```html
+<div id="external-widget-place" data-prop-key="1x2uus88z" data-prop-theme="red">
+  <script async src="https://cdn.awesome/widget.js"></script>
+</div>
+```
 
-#### Cloning multiple widgets
+#### Mount multiple widgets (not inline)
 
 1. make a `<script>` tag and make sure `type="widget/config"`
 2. add JSON config with the `clone` key of habitat script parent node `id` as a value
 
 ```html
-
-<div id="external-widget-place">
-  <script async src="https://cdn.awesome/widget.js"></script>
+<body>
+<div data-widget="awesome-widgets" id="widget-one" data-prop-video-id="123123" data-prop-auto-play="false">
 </div>
 
-<script type="widget/config">
-  {
-    "clone": "external-widget-place"
-  }
-</script>
-
-<script type="widget/config">
-  {
-    "clone": "external-widget-place"
-  }
-</script>
+<div data-widget="awesome-widgets" id="widget-two" data-prop-video-id="898989" data-prop-auto-play="true">
+...
+...
+...
+...
+...
+<script async src="https://cdn.awesome/widget.js" data-mount="awesome-widgets"></script>
+</body>
 
 ```
 
-#### You're all set 🎉!
+#### Prop Names Rules
+Now habitat allow you to pass props from HTML to your preact components, here are the rules:
+
+- ###### starts with `data-prop-`
+- ###### all lower case `data-prop-videoid` === `this.prop.videoid`
+- ###### add dashes for camelCase 🐫 `data-prop-video-id` === `this.prop.videoId`
+
 
 ## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 /> Notes
 
