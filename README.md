@@ -96,7 +96,7 @@ output: {
 Now habitat allow you to pass props from HTML to your preact components, here are the rules:
 
 - *starts with* `data-prop-`
-- •all lower case* `data-prop-videoid` === `this.prop.videoid`
+- *all lower case* `data-prop-videoid` === `this.prop.videoid`
 - *add dashes for camelCase* 🐫 `data-prop-video-id` === `this.prop.videoId`
 
 
