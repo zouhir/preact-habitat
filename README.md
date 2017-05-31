@@ -10,6 +10,8 @@ Preact habitat is a 1.6kb module that will help you ship your Preact components 
 
 ## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 /> Demos
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/zouhir/preact-habitat.svg)](https://greenkeeper.io/)
+
 - *Simple Login* 🔑 [link](https://preact-habitat-inline.netlify.com/)
 
 - *Youtube Players* ▶️ [link](https://preact-habitat-youtube.netlify.com/)
