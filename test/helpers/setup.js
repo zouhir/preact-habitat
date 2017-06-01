@@ -2,8 +2,12 @@
 require('babel-register');
 require('babel-polyfill');
 
+const jsdom = require("jsdom");
+
+const { JSDOM } = jsdom;
+
 // faking a browser, JSDOM is very lightweight
-global.document = require('jsdom').jsdom(
+const clientDOM = new JSDOM(
   `
   <body>
     <div id="sucess-props-check" data-prop-name="zouhir" data-prop-key="11001100"></div>
@@ -16,5 +20,6 @@ global.document = require('jsdom').jsdom(
   `
 );
 // window may not required in our case, but useful to have
-global.window = document.defaultView;
-global.navigator = window.navigator;
+global.window = clientDOM.window;
+global.document = global.window.document;
+global.navigator = global.window.navigator;

@@ -8,5 +8,5 @@ cache:
     - node_modules
 
 install:
-  - npm install preact
+  - npm install preact@latest
   - npm install
