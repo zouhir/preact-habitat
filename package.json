@@ -14,8 +14,8 @@
   "scripts": {
     "build": "npm-run-all transpile optimize minify",
     "transpile": "rollup -c rollup.config.js -m ${npm_package_main}.map -f umd -n $npm_package_amdName $npm_package_jsnext_main -o $npm_package_main",
-    "optimize": "uglifyjs $npm_package_main -bc -o $npm_package_main -p relative --in-source-map ${npm_package_main}.map --source-map ${npm_package_main}.map",
-    "minify": "uglifyjs $npm_package_main -cm -o $npm_package_minified_main -p relative --in-source-map ${npm_package_main}.map --source-map ${npm_package_minified_main}.map",
+    "optimize": "uglifyjs $npm_package_main -bc -o --source-map",
+    "minify": "uglifyjs $npm_package_main -cm -o $npm_package_minified_main",
     "lint": "eslint src/",
     "test": "mocha --require test/helpers/setup.js",
     "test:watch": "mocha --require test/helpers/setup.js -w",
