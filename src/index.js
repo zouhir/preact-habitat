@@ -21,22 +21,6 @@ const habitat = Widget => {
   let mountTo = _getMountAttr(currentScript);
 
   /**
-   * Regsiter event listener so Habitat render when DOM is ready / loaded
-   */
-  document.addEventListener(
-    'readystatechange',
-    () => {
-      if (!hasRendered && document.readyState !== 'loading') {
-        hasRendered = true;
-        q.forEach(function(fun) {
-          return fun();
-        });
-      }
-    },
-    false
-  );
-
-  /**
    * private _render function that will be queued if the DOM is not render
    * and executed immeidatly if DOM is ready
    */
@@ -57,6 +41,22 @@ const habitat = Widget => {
       return preact.render(preact.h(widget, props), hostNode, root);
     });
   };
+
+  /**
+   * Regsiter event listener so Habitat render when DOM is ready / loaded
+   */
+  document.addEventListener(
+    'readystatechange',
+    () => {
+      if (!hasRendered && q.length > 0 && document.readyState !== 'loading') {
+        hasRendered = true;
+        q.forEach(function(fun) {
+          return fun();
+        });
+      }
+    },
+    false
+  );
 
   let render = () => {
     if (document.readyState !== 'loading') {

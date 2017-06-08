@@ -1,7 +1,7 @@
 {
   "name": "preact-habitat",
   "amdName": "PreactHabitat",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "A place for your happy widget in every DOM.",
   "main": "dist/habitat.js",
   "minified:main": "dist/habitat.min.js",

@@ -6,7 +6,7 @@
 </h1>
 <br />
 
-Preact habitat is a 1.6kb module that will help you ship your Preact components \ widget to any world wide DOM page in a very easy and neat way.
+Preact habitat is a 756Byte module that will help you ship your Preact components \ widget to any world wide DOM page in a very easy and neat way.
 
 ## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 /> Demos
 
