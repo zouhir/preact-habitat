@@ -6,6 +6,7 @@
   "main": "dist/habitat.js",
   "minified:main": "dist/habitat.min.js",
   "jsnext:main": "src/index.js",
+  "homepage": "https://github.com/zouhir/preact-habitat/",
   "author": {
     "name": "Zouhir Chahoud",
     "email": "zouhir@zouhir.org",
