@@ -33,25 +33,22 @@
         return Object.keys(attrs).forEach(function(key) {
             attrs.hasOwnProperty(key) && attrs[key].name === attr && (mountValue = attrs[key].nodeValue);
         }), mountValue;
+    }, _isReady = function() {
+        return !document.attachEvent && "interactive" === document.readyState || "complete" === document.readyState;
     };
     return function(Widget) {
-        var hasRendered = !1, q = [], widget = Widget, currentScript = _getWidgetScriptTag(), mountTo = _getMountAttr(currentScript);
-        document.addEventListener("readystatechange", function() {
-            hasRendered || "loading" === document.readyState || (hasRendered = !0, q.forEach(function(fun) {
-                return fun();
-            }));
-        }, !1);
-        var _render = function() {
+        var widget = Widget, hasRendered = !1, currentScript = _getWidgetScriptTag(), mountTo = _getMountAttr(currentScript), _render = function() {
             (mountTo ? _habitatElms(mountTo) : [].concat(currentScript.parentNode)).forEach(function(elm) {
                 var hostNode = elm, props = _habitatsProps(elm) || {};
-                return props.habitatMediaQuery = function() {
-                    return _getHabitatSizeQuery(elm);
-                }, preact.render(preact.h(widget, props), hostNode, null);
+                return preact.render(preact.h(widget, props), hostNode, null);
             });
         };
         return {
             render: function() {
-                return "loading" !== document.readyState ? (hasRendered = !0, _render()) : q.push(_render);
+                if (_isReady() && !hasRendered) return hasRendered = !0, _render();
+                document.onreadystatechange = function() {
+                    if (_isReady() && !hasRendered) return hasRendered = !0, _render();
+                };
             }
         };
     };
