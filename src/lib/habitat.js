@@ -82,10 +82,15 @@ const _getMountAttr = (script, attr = DEF_MOUNT) => {
   return mountValue;
 };
 
+const _isReady = () => {
+  return (!document.attachEvent && document.readyState === 'interactive' || document.readyState === 'complete')
+}
+
 export {
   _habitatsProps,
   _habitatElms,
   _getWidgetScriptTag,
   _getMountAttr,
-  _capetalize
+  _capetalize,
+  _isReady
 };

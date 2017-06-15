@@ -6,7 +6,7 @@ const jsdom = require("jsdom");
 
 const { JSDOM } = jsdom;
 
-// faking a browser, JSDOM is very lightweight
+// faking a browser
 const clientDOM = new JSDOM(
   `
   <body>
