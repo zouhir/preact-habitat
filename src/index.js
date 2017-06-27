@@ -1,52 +1,34 @@
-import preact from 'preact';
-
 import {
-  _habitatElms,
-  _habitatsProps,
-  _getMountAttr,
+  _hostDOMElms,
+  _propsToPassDown,
   _getWidgetScriptTag,
-  _isReady
-} from './lib/habitat';
+  _isReady,
+  _render
+} from "./lib/habitat";
 
 const habitat = Widget => {
-
+  // Widget represents the Preact component we need to mount
   let widget = Widget;
-  let hasRendered = false; // flag to not render twice if document state has changed
+  // in case DOM has fired multipled readystate events, redner only once
+  let hasRendered = false;
+  // preact root render helper
   let root = null;
-  let currentScript = _getWidgetScriptTag(); // get current script
 
-  let mountTo = _getMountAttr(currentScript);
-
-  /**
-   * private _render function that will be queued if the DOM is not render
-   * and executed immeidatly if DOM is ready
-   */
-  let _render = () => {
-    let habitats = null;
-    if (mountTo) {
-      habitats = _habitatElms(mountTo);
-    } else {
-      habitats = [].concat(currentScript.parentNode);
-    }
-    habitats.forEach(elm => {
-      let hostNode = elm;
-      let props = _habitatsProps(elm) || {};
-      return preact.render(preact.h(widget, props), hostNode, root);
-    });
-  };
-
-  let render = () => {
-    if(_isReady() && !hasRendered) {
+  let render = ({ name = "data-widget", value = null, inline = true } = {}) => {
+    let isReady = _isReady();
+    if (isReady && !hasRendered) {
+      let elements = _hostDOMElms({ name, value, inline });
       hasRendered = true;
-      return _render();
-    } else {
-      document.onreadystatechange = () => {
-        if (_isReady() && !hasRendered) {
-          hasRendered = true;
-          return _render();
-        }
-      };
+      return _render(widget, elements, root);
     }
+    // document is not ready - subscurib to readystatechange event
+    document.onreadystatechange = () => {
+      let elements = _hostDOMElms({ name, value, inline });
+      if (isReady && !hasRendered) {
+        hasRendered = true;
+        return _render(widget, elements, root);
+      }
+    };
   };
 
   return { render };

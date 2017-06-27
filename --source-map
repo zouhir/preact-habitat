@@ -7,8 +7,13 @@
         return str.replace(/-([a-z])/gi, function(all, letter) {
             return letter.toUpperCase();
         });
-    }, _habitatsProps = function(tag) {
-        var attr = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "data-prop", attrs = tag.attributes, props = {};
+    }, _getCurrentScriptTag = function() {
+        return document.currentScript || function() {
+            var scripts = document.getElementsByTagName("script");
+            return scripts[scripts.length - 1];
+        }();
+    }, _propsToPassDown = function(element) {
+        var attr = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "data-prop", attrs = element.attributes, props = {};
         return Object.keys(attrs).forEach(function(key) {
             if (attrs.hasOwnProperty(key)) {
                 var dataAttrName = attrs[key].name, propName = dataAttrName.split(attr + "-").pop();
@@ -18,36 +23,45 @@
                 }
             }
         }), props;
-    }, _habitatElms = function(attrValue) {
-        var attrKey = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "data-widget", hostNodes = [];
-        return [].forEach.call(document.querySelectorAll("[" + attrKey + "]"), function(queriedTag) {
-            attrValue === queriedTag.getAttribute(attrKey) && hostNodes.push(queriedTag);
-        }), hostNodes;
-    }, _getWidgetScriptTag = function() {
-        return document.currentScript || function() {
-            var scripts = document.getElementsByTagName("script");
-            return scripts[scripts.length - 1];
-        }();
-    }, _getMountAttr = function(script) {
-        var attr = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "data-mount", attrs = script.attributes, mountValue = null;
-        return Object.keys(attrs).forEach(function(key) {
-            attrs.hasOwnProperty(key) && attrs[key].name === attr && (mountValue = attrs[key].nodeValue);
-        }), mountValue;
+    }, _hostDOMElms = function() {
+        var _ref = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref$name = _ref.name, name = void 0 === _ref$name ? "data-widget" : _ref$name, _ref$value = _ref.value, value = void 0 === _ref$value ? null : _ref$value, _ref$inline = _ref.inline, inline = void 0 === _ref$inline || _ref$inline, hostNodes = [], currentScript = _getCurrentScriptTag();
+        if (!value) {
+            var scriptTagAttrs = currentScript.attributes;
+            Object.keys(scriptTagAttrs).forEach(function(key) {
+                scriptTagAttrs.hasOwnProperty(key) && "data-mount" === scriptTagAttrs[key].name && (value = scriptTagAttrs[key].nodeValue);
+            });
+        }
+        return !value && inline ? [].concat(currentScript.parentNode) : ([].forEach.call(document.querySelectorAll("[" + name + "]"), function(queriedTag) {
+            value === queriedTag.getAttribute(name) && hostNodes.push(queriedTag);
+        }), hostNodes);
     }, _isReady = function() {
         return !document.attachEvent && "interactive" === document.readyState || "complete" === document.readyState;
+    }, _render = function(widget, hostElements, root) {
+        hostElements.forEach(function(elm) {
+            var hostNode = elm, props = _propsToPassDown(elm) || {};
+            return preact.render(preact.h(widget, props), hostNode, root);
+        });
     };
     return function(Widget) {
-        var widget = Widget, hasRendered = !1, currentScript = _getWidgetScriptTag(), mountTo = _getMountAttr(currentScript), _render = function() {
-            (mountTo ? _habitatElms(mountTo) : [].concat(currentScript.parentNode)).forEach(function(elm) {
-                var hostNode = elm, props = _habitatsProps(elm) || {};
-                return preact.render(preact.h(widget, props), hostNode, null);
-            });
-        };
+        var widget = Widget, hasRendered = !1;
         return {
             render: function() {
-                if (_isReady() && !hasRendered) return hasRendered = !0, _render();
+                var _ref = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref$name = _ref.name, name = void 0 === _ref$name ? "data-widget" : _ref$name, _ref$value = _ref.value, value = void 0 === _ref$value ? null : _ref$value, _ref$inline = _ref.inline, inline = void 0 === _ref$inline || _ref$inline, isReady = _isReady();
+                if (isReady && !hasRendered) {
+                    var elements = _hostDOMElms({
+                        name: name,
+                        value: value,
+                        inline: inline
+                    });
+                    return hasRendered = !0, _render(widget, elements, null);
+                }
                 document.onreadystatechange = function() {
-                    if (_isReady() && !hasRendered) return hasRendered = !0, _render();
+                    var elements = _hostDOMElms({
+                        name: name,
+                        value: value,
+                        inline: inline
+                    });
+                    if (isReady && !hasRendered) return hasRendered = !0, _render(widget, elements, null);
                 };
             }
         };

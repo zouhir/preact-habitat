@@ -1,10 +1,9 @@
 import { h } from 'preact';
 import { expect } from 'chai';
 import {
-  _habitatsProps,
-  _habitatElms,
-  _getWidgetScriptTag,
-  _getMountAttr,
+  _propsToPassDown,
+  _hostDOMElms,
+  _getCurrentScriptTag,
   _capetalize,
   _isReady
 } from '../src/lib/habitat';
@@ -12,9 +11,12 @@ import {
 import habitat from '../src';
 
 describe('Habitat module utilities', () => {
+  afterEach(() => {
+    document.attachEvent = false
+  });
   it('should find all habitat divs in document', () => {
     const DATA_VALUE = 'my-widget';
-    const hostHabitats = _habitatElms(DATA_VALUE);
+    const hostHabitats = _hostDOMElms({ value: DATA_VALUE });
     // document must find current script tag
     expect(hostHabitats.length).to.equal(3);
   });
@@ -25,7 +27,7 @@ describe('Habitat module utilities', () => {
       name: 'zouhir',
       key: '11001100'
     };
-    const propsObj = _habitatsProps(habitatDiv);
+    const propsObj = _propsToPassDown(habitatDiv);
     // document must find current script tag
     expect(propsObj).to.deep.equal(expectedProps);
   });
@@ -43,13 +45,7 @@ describe('Habitat module utilities', () => {
   });
 
   it('should get the currently getting executed script tag', () => {
-    expect(_getWidgetScriptTag(document)).to.not.be.undefined;
-  });
-
-  it('should get the `mount` attribute on the tag', () => {
-    let mountTo = 'my-widget';
-    let myScript = document.getElementById('find-mount-here');
-    expect(_getMountAttr(myScript)).to.equal(mountTo);
+    expect(_getCurrentScriptTag(document)).to.not.be.undefined;
   });
   it('ready', () => {
     Object.defineProperty(document, "readyState", {

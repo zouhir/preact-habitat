@@ -1,9 +1,7 @@
-const DEF_PROP_ATTR = 'data-prop';
-const DEF_WIDGET_ID = 'data-widget';
-const DEF_MOUNT = 'data-mount';
-
+import preact from 'preact'
 /**
  * Capetalize every letter after `-`
+ * Used for props passed from host DOM element
  * @param  {String} str string
  * @return {String}     Capetalized string
  */
@@ -14,15 +12,28 @@ const _capetalize = str => {
 };
 
 /**
+ * [_getCurrentScriptTag internal widget to provide the currently executed script]
+ * @param  {document} document [Browser document object]
+ * @return {HTMLElement}     [script Element]
+ */
+const _getCurrentScriptTag = () => {
+  return document.currentScript ||
+    (() => {
+      let scripts = document.getElementsByTagName('script');
+      return scripts[scripts.length - 1];
+    })();
+};
+
+/**
  * Get the props from a host element's data attributes
  * @param  {Element} tag The host element
  * @return {Object}     props object to be passed to the component
  */
-const _habitatsProps = (tag, attr = DEF_PROP_ATTR) => {
-  let attrs = tag.attributes;
+const _propsToPassDown = (element, attr = 'data-prop') => {
+  let attrs = element.attributes;
   let props = {};
 
-  // ceck for another props attached to the tag
+  // ceck for another props attached to the element
   Object.keys(attrs).forEach(key => {
     if (attrs.hasOwnProperty(key)) {
       let dataAttrName = attrs[key].name;
@@ -43,54 +54,54 @@ const _habitatsProps = (tag, attr = DEF_PROP_ATTR) => {
  * @param  {document} scope  Docuemnt object or DOM Element as a scope
  * @return {Array}        Array of matching habitats
  */
-const _habitatElms = (attrValue, attrKey = DEF_WIDGET_ID) => {
+const _hostDOMElms = ({ name = "data-widget", value = null, inline = true } = {}) => {
   let hostNodes = [];
-  [].forEach.call(document.querySelectorAll(`[${attrKey}]`), queriedTag => {
-    if (attrValue === queriedTag.getAttribute(attrKey)) {
+  let currentScript = _getCurrentScriptTag();
+  if (!value) {
+    // user did not specify where to mount - get it from script tag attributes
+    let scriptTagAttrs = currentScript.attributes;
+    // ceck for another props attached to the tag
+    Object.keys(scriptTagAttrs).forEach(key => {
+      if (scriptTagAttrs.hasOwnProperty(key)) {
+        const dataAttrName = scriptTagAttrs[key].name;
+        if (dataAttrName === 'data-mount') {
+          value = scriptTagAttrs[key].nodeValue;
+        }
+      }
+    });
+  }
+  if (!value && inline) {
+    return [].concat(currentScript.parentNode);
+  }
+  [].forEach.call(document.querySelectorAll(`[${name}]`), queriedTag => {
+    if (value === queriedTag.getAttribute(name)) {
       hostNodes.push(queriedTag);
     }
   });
   return hostNodes;
 };
 
-/**
- * [_getWidgetScriptTag internal widget to provide the currently executed script]
- * @param  {document} document [Browser document object]
- * @return {HTMLElement}     [script Element]
- */
-const _getWidgetScriptTag = () => {
-  return document.currentScript ||
-    (() => {
-      let scripts = document.getElementsByTagName('script');
-      return scripts[scripts.length - 1];
-    })();
-};
-
-// TODO: abstract and reuse with ./habitat.js _habitatsProps
-const _getMountAttr = (script, attr = DEF_MOUNT) => {
-  let attrs = script.attributes;
-  let mountValue = null;
-  // ceck for another props attached to the tag
-  Object.keys(attrs).forEach(key => {
-    if (attrs.hasOwnProperty(key)) {
-      const dataAttrName = attrs[key].name;
-      if (dataAttrName === attr) {
-        mountValue = attrs[key].nodeValue;
-      }
-    }
-  });
-  return mountValue;
-};
-
 const _isReady = () => {
   return (!document.attachEvent && document.readyState === 'interactive' || document.readyState === 'complete')
 }
 
+/**
+ * private _render function that will be queued if the DOM is not render
+ * and executed immeidatly if DOM is ready
+ */
+let _render = (widget, hostElements, root) => {
+  hostElements.forEach(elm => {
+    let hostNode = elm;
+    let props = _propsToPassDown(elm) || {};
+    return preact.render(preact.h(widget, props), hostNode, root);
+  });
+};
+
 export {
-  _habitatsProps,
-  _habitatElms,
-  _getWidgetScriptTag,
-  _getMountAttr,
+  _propsToPassDown,
+  _hostDOMElms,
+  _getCurrentScriptTag,
   _capetalize,
-  _isReady
+  _isReady,
+  _render
 };

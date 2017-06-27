@@ -3,10 +3,9 @@ import { expect } from 'chai';
 import simulant from 'simulant';
 
 import {
-  _habitatsProps,
-  _habitatElms,
-  _getWidgetScriptTag,
-  _getMountAttr,
+  _propsToPassDown,
+  _hostDOMElms,
+  _getCurrentScriptTag,
   _capetalize,
 } from '../src/lib/habitat';
 
@@ -30,11 +29,17 @@ describe('Module API Specs', () => {
     });
 });
 
-
-describe('Habitat Renderer', () => {
+/**
+ * Renders the widget based on client specified attributes
+ */
+describe('Habitat Client Control Renderer', () => {
     afterEach(() => {
-        let widgets = _habitatElms('my-widget');
-        widgets.forEach(widget => {
+        let widgetsClientMounted = _hostDOMElms({ value: 'my-widget' });
+        let widgetsDveloperMounted = _hostDOMElms({ name: 'data-widget-tv', value: 'tv-player' });
+        widgetsClientMounted.forEach(widget => {
+            widget.innerHTML = ''
+        })
+        widgetsDveloperMounted.forEach(widget => {
             widget.innerHTML = ''
         })
     });
@@ -45,6 +50,24 @@ describe('Habitat Renderer', () => {
       let widgets = document.querySelectorAll('.test');
       expect(document.body.innerHTML).to.contain(TEST_TITLE);
       expect(widgets.length).to.equal(3);
+
+    });
+    it('should render the widget in 3 habitat elements', () => {
+      let hb = habitat(TitleComponent);
+      hb.render({ value: 'my-widget' });
+
+      let widgets = document.querySelectorAll('.test');
+      expect(document.body.innerHTML).to.contain(TEST_TITLE);
+      expect(widgets.length).to.equal(3);
+
+    });
+    it('should render 2 custom attributes habitat elements', () => {
+      let hb = habitat(TitleComponent);
+      hb.render({ name: 'data-widget-tv', value: 'tv-player' });
+
+      let widgets = document.querySelectorAll('.test');
+      expect(document.body.innerHTML).to.contain(TEST_TITLE);
+      expect(widgets.length).to.equal(2);
 
     });
     it('should cleanup the DOM after each test', () => {

@@ -14,6 +14,9 @@ const clientDOM = new JSDOM(
     <div data-widget="my-widget"></div>
     <div data-widget="my-widget"></div>
     <div data-widget="my-widget"></div>
+    <!-- custom tag and value -->
+    <div data-widget-tv="tv-player"></div>
+    <div data-widget-tv="tv-player"></div>
 
     <script id="find-mount-here" data-mount="my-widget"></script>
   </body>
