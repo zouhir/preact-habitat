@@ -35,13 +35,17 @@ npm install --save preact-habitat
 import habitat from 'preact-habitat';
 import WidgetAwesomeOne from './components/WidgetAwesome';
 import WidgetAwesomeTwo from './components/WidgetAwesome';
+import WidgetAwesomeThree from './components/WidgetAwesome';
 
 let habitatOne = habitat(WidgetAwesomeOne);
 let habitatTwo = habitat(WidgetAwesomeTwo);
+let habitatThree = habitat(WidgetAwesomeTwo);
 
 habitatOne.render();
 habitatTwo.render();
+habitatThree.render({ name: 'data-mount-here', value: 'mount-number-three' });
 ```
+
 
 ### Set the build output library type to UMD
 
@@ -65,7 +69,7 @@ output: {
 </div>
 ```
 
-> ✨ NEW: Pass props! ✨
+> ✨ Pass props! ✨
 
 ```html
 <div id="external-widget-place" data-prop-key="1x2uus88z" data-prop-theme="red">
@@ -91,6 +95,31 @@ output: {
 <script async src="https://cdn.awesome/widget.js" data-mount="awesome-widgets"></script>
 </body>
 ```
+
+### Mount multiple widgets (developer specified divs)
+```html
+<body>
+<div data-widget-here-please="widget-number-three" id="widget-one" data-prop-video-id="123123" data-prop-auto-play="false">
+</div>
+<script async src="https://cdn.awesome/widget.js"></script>
+</body>
+```
+```js
+import habitat from 'preact-habitat';
+import WidgetAwesomeThree from './components/WidgetAwesome';
+
+let habitatThree = habitat(WidgetAwesomeTwo);
+habitatThree.render({ name: 'data-widget-here-please', value: 'widget-number-three', inline: false });
+
+```
+### Render Method API
+
+Render method accepts an *Object* and supports 3 properties
+
+- name: HTML tag attribute name, Srting, default `data-mount`.
+- value: HTML tag attribute value, Strinf, default null.
+- inline: Enable \ Disable inline mounting for the widget, Boolean.
+
 
 ### Prop Names Rules
 Now habitat allow you to pass props from HTML to your preact components, here are the rules:
