@@ -42,6 +42,7 @@ describe('Habitat Client Control Renderer', () => {
         widgetsDveloperMounted.forEach(widget => {
             widget.innerHTML = ''
         })
+        document.querySelectorAll('.datatable')[0].innerHTML = 'LOADING BIG TABLE'
     });
     it('should render the widget in 3 habitat elements', () => {
       let hb = habitat(TitleComponent);
@@ -70,6 +71,27 @@ describe('Habitat Client Control Renderer', () => {
       expect(widgets.length).to.equal(2);
 
     });
+
+    it('should render 1 widget and not clean its content', () => {
+      let hb = habitat(TitleComponent);
+      hb.render({ name: 'data-table-widget', value: 'datatable', clean: false });
+
+      let widgets = document.querySelectorAll('.datatable');
+      expect(document.body.innerHTML).to.contain('LOADING BIG TABLE');
+      expect(widgets[0].innerHTML).to.contain(TEST_TITLE);
+      expect(widgets.length).to.equal(1);
+    });
+
+    it('should render 1 widget and clean loading conten tent', () => {
+      let hb = habitat(TitleComponent);
+      hb.render({ name: 'data-table-widget', value: 'datatable', clean: true});
+
+      let widgets = document.querySelectorAll('.datatable');
+      expect(widgets[0].innerHTML).to.not.contain('LOADING BIG TABLE');
+      expect(widgets[0].innerHTML).to.contain(TEST_TITLE);
+      expect(widgets.length).to.equal(1);
+    });
+
     it('should cleanup the DOM after each test', () => {
         let w2 = document.querySelectorAll('.test');
         expect(w2.length).to.equal(0);

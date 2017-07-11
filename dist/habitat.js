@@ -69,7 +69,9 @@ var _hostDOMElms = function () {
       _ref$value = _ref.value,
       value = _ref$value === undefined ? null : _ref$value,
       _ref$inline = _ref.inline,
-      inline = _ref$inline === undefined ? true : _ref$inline;
+      inline = _ref$inline === undefined ? true : _ref$inline,
+      _ref$clean = _ref.clean,
+      clean = _ref$clean === undefined ? true : _ref$clean;
 
   var hostNodes = [];
   var currentScript = _getCurrentScriptTag();
@@ -87,10 +89,17 @@ var _hostDOMElms = function () {
     });
   }
   if (!value && inline) {
-    return [].concat(currentScript.parentNode);
+    var node = currentScript.parentNode;
+    if (clean) {
+      node.innerHTML = '';
+    }
+    return [].concat(node);
   }
   [].forEach.call(document.querySelectorAll('[' + name + ']'), function (queriedTag) {
     if (value === queriedTag.getAttribute(name)) {
+      if (clean) {
+        queriedTag.innerHTML = '';
+      }
       hostNodes.push(queriedTag);
     }
   });
@@ -124,16 +133,18 @@ var habitat = function (Widget) {
         _ref$value = _ref.value,
         value = _ref$value === undefined ? null : _ref$value,
         _ref$inline = _ref.inline,
-        inline = _ref$inline === undefined ? true : _ref$inline;
+        inline = _ref$inline === undefined ? true : _ref$inline,
+        _ref$clean = _ref.clean,
+        clean = _ref$clean === undefined ? true : _ref$clean;
 
-    var elements = _hostDOMElms({ name: name, value: value, inline: inline });
+    var elements = _hostDOMElms({ name: name, value: value, inline: inline, clean: clean });
     if (!hasRendered && elements.length > 0) {
       hasRendered = true;
       return _render(widget, elements, root);
     }
     // document is not ready - subscurib to readystatechange event
     document.addEventListener('DOMContentLoaded', function (e) {
-      var elements = _hostDOMElms({ name: name, value: value, inline: inline });
+      var elements = _hostDOMElms({ name: name, value: value, inline: inline, clean: clean });
       if (!hasRendered && elements.length > 0) {
         hasRendered = true;
         return _render(widget, elements, root);

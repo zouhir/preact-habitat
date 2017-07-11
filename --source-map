@@ -24,16 +24,21 @@
             }
         }), props;
     }, _hostDOMElms = function() {
-        var _ref = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref$name = _ref.name, name = void 0 === _ref$name ? "data-widget" : _ref$name, _ref$value = _ref.value, value = void 0 === _ref$value ? null : _ref$value, _ref$inline = _ref.inline, inline = void 0 === _ref$inline || _ref$inline, hostNodes = [], currentScript = _getCurrentScriptTag();
+        var _ref = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref$name = _ref.name, name = void 0 === _ref$name ? "data-widget" : _ref$name, _ref$value = _ref.value, value = void 0 === _ref$value ? null : _ref$value, _ref$inline = _ref.inline, inline = void 0 === _ref$inline || _ref$inline, _ref$clean = _ref.clean, clean = void 0 === _ref$clean || _ref$clean, hostNodes = [], currentScript = _getCurrentScriptTag();
         if (!value) {
             var scriptTagAttrs = currentScript.attributes;
             Object.keys(scriptTagAttrs).forEach(function(key) {
                 scriptTagAttrs.hasOwnProperty(key) && "data-mount" === scriptTagAttrs[key].name && (value = scriptTagAttrs[key].nodeValue);
             });
         }
-        return !value && inline ? [].concat(currentScript.parentNode) : ([].forEach.call(document.querySelectorAll("[" + name + "]"), function(queriedTag) {
-            value === queriedTag.getAttribute(name) && hostNodes.push(queriedTag);
-        }), hostNodes);
+        if (!value && inline) {
+            var node = currentScript.parentNode;
+            return clean && (node.innerHTML = ""), [].concat(node);
+        }
+        return [].forEach.call(document.querySelectorAll("[" + name + "]"), function(queriedTag) {
+            value === queriedTag.getAttribute(name) && (clean && (queriedTag.innerHTML = ""), 
+            hostNodes.push(queriedTag));
+        }), hostNodes;
     }, _render = function(widget, hostElements, root) {
         hostElements.forEach(function(elm) {
             var hostNode = elm, props = _propsToPassDown(elm) || {};
@@ -44,17 +49,19 @@
         var widget = Widget, hasRendered = !1;
         return {
             render: function() {
-                var _ref = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref$name = _ref.name, name = void 0 === _ref$name ? "data-widget" : _ref$name, _ref$value = _ref.value, value = void 0 === _ref$value ? null : _ref$value, _ref$inline = _ref.inline, inline = void 0 === _ref$inline || _ref$inline, elements = _hostDOMElms({
+                var _ref = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref$name = _ref.name, name = void 0 === _ref$name ? "data-widget" : _ref$name, _ref$value = _ref.value, value = void 0 === _ref$value ? null : _ref$value, _ref$inline = _ref.inline, inline = void 0 === _ref$inline || _ref$inline, _ref$clean = _ref.clean, clean = void 0 === _ref$clean || _ref$clean, elements = _hostDOMElms({
                     name: name,
                     value: value,
-                    inline: inline
+                    inline: inline,
+                    clean: clean
                 });
                 if (!hasRendered && elements.length > 0) return hasRendered = !0, _render(widget, elements, null);
                 document.addEventListener("DOMContentLoaded", function(e) {
                     var elements = _hostDOMElms({
                         name: name,
                         value: value,
-                        inline: inline
+                        inline: inline,
+                        clean: clean
                     });
                     if (!hasRendered && elements.length > 0) return hasRendered = !0, _render(widget, elements, null);
                 });

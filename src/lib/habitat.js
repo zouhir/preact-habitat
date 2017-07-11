@@ -54,7 +54,7 @@ const _propsToPassDown = (element, attr = 'data-prop') => {
  * @param  {document} scope  Docuemnt object or DOM Element as a scope
  * @return {Array}        Array of matching habitats
  */
-const _hostDOMElms = ({ name = "data-widget", value = null, inline = true } = {}) => {
+const _hostDOMElms = ({ name = "data-widget", value = null, inline = true, clean = true } = {}) => {
   let hostNodes = [];
   let currentScript = _getCurrentScriptTag();
   if (!value) {
@@ -71,10 +71,17 @@ const _hostDOMElms = ({ name = "data-widget", value = null, inline = true } = {}
     });
   }
   if (!value && inline) {
-    return [].concat(currentScript.parentNode);
+    let node = currentScript.parentNode
+    if (clean) {
+      node.innerHTML = '';
+    }
+    return [].concat(node);
   }
   [].forEach.call(document.querySelectorAll(`[${name}]`), queriedTag => {
     if (value === queriedTag.getAttribute(name)) {
+      if (clean) {
+        queriedTag.innerHTML = '';
+      }
       hostNodes.push(queriedTag);
     }
   });

@@ -13,15 +13,15 @@ const habitat = Widget => {
   // preact root render helper
   let root = null;
 
-  let render = ({ name = "data-widget", value = null, inline = true } = {}) => {
-    let elements = _hostDOMElms({ name, value, inline });
+  let render = ({ name = "data-widget", value = null, inline = true, clean = true } = {}) => {
+    let elements = _hostDOMElms({ name, value, inline, clean });
     if (!hasRendered && elements.length > 0) {
       hasRendered = true;
       return _render(widget, elements, root);
     }
     // document is not ready - subscurib to readystatechange event
     document.addEventListener('DOMContentLoaded', (e) => {
-      let elements = _hostDOMElms({ name, value, inline });
+      let elements = _hostDOMElms({ name, value, inline, clean });
       if (!hasRendered && elements.length > 0) {
         hasRendered = true;
         return _render(widget, elements, root);

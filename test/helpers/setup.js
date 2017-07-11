@@ -18,6 +18,9 @@ const clientDOM = new JSDOM(
     <div data-widget-tv="tv-player"></div>
     <div data-widget-tv="tv-player"></div>
 
+    <!-- cleanup widget -->
+    <div class='datatable' data-table-widget="datatable"><div>LOADING BIG TABLE</div></div>
+
     <script id="find-mount-here" data-mount="my-widget"></script>
   </body>
   `
