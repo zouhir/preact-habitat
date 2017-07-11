@@ -2,7 +2,6 @@ import {
   _hostDOMElms,
   _propsToPassDown,
   _getWidgetScriptTag,
-  _isReady,
   _render
 } from "./lib/habitat";
 
@@ -15,20 +14,19 @@ const habitat = Widget => {
   let root = null;
 
   let render = ({ name = "data-widget", value = null, inline = true } = {}) => {
-    let isReady = _isReady();
-    if (isReady && !hasRendered) {
-      let elements = _hostDOMElms({ name, value, inline });
+    let elements = _hostDOMElms({ name, value, inline });
+    if (!hasRendered && elements.length > 0) {
       hasRendered = true;
       return _render(widget, elements, root);
     }
     // document is not ready - subscurib to readystatechange event
-    document.onreadystatechange = () => {
+    document.addEventListener('DOMContentLoaded', (e) => {
       let elements = _hostDOMElms({ name, value, inline });
-      if (isReady && !hasRendered) {
+      if (!hasRendered && elements.length > 0) {
         hasRendered = true;
         return _render(widget, elements, root);
       }
-    };
+    })
   };
 
   return { render };

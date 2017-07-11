@@ -34,8 +34,6 @@
         return !value && inline ? [].concat(currentScript.parentNode) : ([].forEach.call(document.querySelectorAll("[" + name + "]"), function(queriedTag) {
             value === queriedTag.getAttribute(name) && hostNodes.push(queriedTag);
         }), hostNodes);
-    }, _isReady = function() {
-        return !document.attachEvent && "interactive" === document.readyState || "complete" === document.readyState;
     }, _render = function(widget, hostElements, root) {
         hostElements.forEach(function(elm) {
             var hostNode = elm, props = _propsToPassDown(elm) || {};
@@ -46,23 +44,20 @@
         var widget = Widget, hasRendered = !1;
         return {
             render: function() {
-                var _ref = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref$name = _ref.name, name = void 0 === _ref$name ? "data-widget" : _ref$name, _ref$value = _ref.value, value = void 0 === _ref$value ? null : _ref$value, _ref$inline = _ref.inline, inline = void 0 === _ref$inline || _ref$inline, isReady = _isReady();
-                if (isReady && !hasRendered) {
+                var _ref = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}, _ref$name = _ref.name, name = void 0 === _ref$name ? "data-widget" : _ref$name, _ref$value = _ref.value, value = void 0 === _ref$value ? null : _ref$value, _ref$inline = _ref.inline, inline = void 0 === _ref$inline || _ref$inline, elements = _hostDOMElms({
+                    name: name,
+                    value: value,
+                    inline: inline
+                });
+                if (!hasRendered && elements.length > 0) return hasRendered = !0, _render(widget, elements, null);
+                document.addEventListener("DOMContentLoaded", function(e) {
                     var elements = _hostDOMElms({
                         name: name,
                         value: value,
                         inline: inline
                     });
-                    return hasRendered = !0, _render(widget, elements, null);
-                }
-                document.onreadystatechange = function() {
-                    var elements = _hostDOMElms({
-                        name: name,
-                        value: value,
-                        inline: inline
-                    });
-                    if (isReady && !hasRendered) return hasRendered = !0, _render(widget, elements, null);
-                };
+                    if (!hasRendered && elements.length > 0) return hasRendered = !0, _render(widget, elements, null);
+                });
             }
         };
     };

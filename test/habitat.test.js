@@ -74,18 +74,17 @@ describe('Habitat Client Control Renderer', () => {
         let w2 = document.querySelectorAll('.test');
         expect(w2.length).to.equal(0);
     });
-    it('should not render if document readyState is loading', () => {
+    it('should render if document readyState is complete', () => {
       Object.defineProperty(document, "readyState", {
         configurable: true,
-        get() { return "loading"; }
+        get() { return "complete"; }
       });
-      expect(document.readyState).to.equal('loading');
+      expect(document.readyState).to.equal('complete');
 
       let hb = habitat(TitleComponent);
       hb.render();
 
       let widgets = document.querySelectorAll('.test');
-      expect(document.body.innerHTML).to.not.contain(TEST_TITLE);
-      expect(widgets.length).to.equal(0);
+      expect(document.body.innerHTML).to.contain(TEST_TITLE);
     });
 });

@@ -97,10 +97,6 @@ var _hostDOMElms = function () {
   return hostNodes;
 };
 
-var _isReady = function () {
-  return !document.attachEvent && document.readyState === 'interactive' || document.readyState === 'complete';
-};
-
 /**
  * private _render function that will be queued if the DOM is not render
  * and executed immeidatly if DOM is ready
@@ -130,20 +126,19 @@ var habitat = function (Widget) {
         _ref$inline = _ref.inline,
         inline = _ref$inline === undefined ? true : _ref$inline;
 
-    var isReady = _isReady();
-    if (isReady && !hasRendered) {
-      var elements = _hostDOMElms({ name: name, value: value, inline: inline });
+    var elements = _hostDOMElms({ name: name, value: value, inline: inline });
+    if (!hasRendered && elements.length > 0) {
       hasRendered = true;
       return _render(widget, elements, root);
     }
     // document is not ready - subscurib to readystatechange event
-    document.onreadystatechange = function () {
+    document.addEventListener('DOMContentLoaded', function (e) {
       var elements = _hostDOMElms({ name: name, value: value, inline: inline });
-      if (isReady && !hasRendered) {
+      if (!hasRendered && elements.length > 0) {
         hasRendered = true;
         return _render(widget, elements, root);
       }
-    };
+    });
   };
 
   return { render: render };
