@@ -13,10 +13,10 @@
             return scripts[scripts.length - 1];
         }();
     }, _propsToPassDown = function(element) {
-        var attr = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "data-prop", attrs = element.attributes, props = {};
+        var attr = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "data-prop", attrs = element.attributes, altAttr = attr + "s", props = {};
         return Object.keys(attrs).forEach(function(key) {
             if (attrs.hasOwnProperty(key)) {
-                var dataAttrName = attrs[key].name, propName = dataAttrName.split(attr + "-").pop();
+                var dataAttrName = attrs[key].name, propName = dataAttrName.split(attr + "-").pop() || dataAttrName.split(altAttr + "-").pop();
                 if (propName = _capetalize(propName), dataAttrName !== propName) {
                     var propValue = attrs[key].nodeValue;
                     props[propName] = propValue;
