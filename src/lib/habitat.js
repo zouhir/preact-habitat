@@ -27,7 +27,7 @@ const _getCurrentScriptTag = () => {
 /**
  * Get the props from a host element's data attributes
  * @param  {Element} tag The host element
- * @return {Object}     props object to be passed to the component
+ * @return {Object}  props object to be passed to the component
  */
 const _propsToPassDown = (element, attr = 'data-prop') => {
   let attrs = element.attributes;
