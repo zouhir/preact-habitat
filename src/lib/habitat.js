@@ -31,13 +31,14 @@ const _getCurrentScriptTag = () => {
  */
 const _propsToPassDown = (element, attr = 'data-prop') => {
   let attrs = element.attributes;
+  let altAttr = `${attr}s` // support both data-prop and data-props
   let props = {};
 
   // ceck for another props attached to the element
   Object.keys(attrs).forEach(key => {
     if (attrs.hasOwnProperty(key)) {
       let dataAttrName = attrs[key].name;
-      let propName = dataAttrName.split(attr + `-`).pop();
+      let propName = dataAttrName.split(attr + `-`).pop() || dataAttrName.split(altAttr + `-`).pop();
       propName = _capetalize(propName);
       if (dataAttrName !== propName) {
         let propValue = attrs[key].nodeValue;
