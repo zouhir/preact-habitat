@@ -1,6 +1,5 @@
 import {
   _hostDOMElms,
-  _propsToPassDown,
   _getWidgetScriptTag,
   _render
 } from "./lib/habitat";

@@ -29,16 +29,15 @@ const _getCurrentScriptTag = () => {
  * @param  {Element} tag The host element
  * @return {Object}  props object to be passed to the component
  */
-const _propsToPassDown = (element, attr = 'data-prop') => {
+const _propsToPassDown = (element) => {
   let attrs = element.attributes;
-  let altAttr = `${attr}s` // support both data-prop and data-props
   let props = {};
 
   // ceck for another props attached to the element
   Object.keys(attrs).forEach(key => {
     if (attrs.hasOwnProperty(key)) {
       let dataAttrName = attrs[key].name;
-      let propName = dataAttrName.split(attr + `-`).pop() || dataAttrName.split(altAttr + `-`).pop();
+      let propName = dataAttrName.split(/(data-prop-|data-props-)/).pop();
       propName = _capetalize(propName);
       if (dataAttrName !== propName) {
         let propValue = attrs[key].nodeValue;

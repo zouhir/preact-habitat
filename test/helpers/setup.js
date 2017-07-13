@@ -10,7 +10,7 @@ const { JSDOM } = jsdom;
 const clientDOM = new JSDOM(
   `
   <body>
-    <div id="sucess-props-check" data-prop-name="zouhir" data-prop-key="11001100"></div>
+    <div id="sucess-props-check" data-props-name="zouhir" data-prop-key="11001100"></div>
     <div data-widget="my-widget"></div>
     <div data-widget="my-widget"></div>
     <div data-widget="my-widget"></div>
