@@ -37,7 +37,7 @@ const _propsToPassDown = (element) => {
   Object.keys(attrs).forEach(key => {
     if (attrs.hasOwnProperty(key)) {
       let dataAttrName = attrs[key].name;
-      if (!dataAttrName) {
+      if (!dataAttrName || typeof dataAttrName !== 'string') {
         return false;
       }
       let propName = dataAttrName.split(/(data-props?-)/).pop();
