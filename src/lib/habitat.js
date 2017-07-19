@@ -37,7 +37,10 @@ const _propsToPassDown = (element) => {
   Object.keys(attrs).forEach(key => {
     if (attrs.hasOwnProperty(key)) {
       let dataAttrName = attrs[key].name;
-      let propName = dataAttrName.split(/(data-prop-|data-props-)/).pop();
+      if (!dataAttrName) {
+        return false;
+      }
+      let propName = dataAttrName.split(/(data-props?-)/).pop();
       propName = _capetalize(propName);
       if (dataAttrName !== propName) {
         let propValue = attrs[key].nodeValue;
