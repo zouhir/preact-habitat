@@ -16,7 +16,9 @@
         var attrs = element.attributes, props = {};
         return Object.keys(attrs).forEach(function(key) {
             if (attrs.hasOwnProperty(key)) {
-                var dataAttrName = attrs[key].name, propName = dataAttrName.split(/(data-prop-|data-props-)/).pop();
+                var dataAttrName = attrs[key].name;
+                if (!dataAttrName || "string" != typeof dataAttrName) return !1;
+                var propName = dataAttrName.split(/(data-props?-)/).pop();
                 if (propName = _capetalize(propName), dataAttrName !== propName) {
                     var propValue = attrs[key].nodeValue;
                     props[propName] = propValue;

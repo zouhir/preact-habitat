@@ -43,7 +43,10 @@ var _propsToPassDown = function (element) {
   Object.keys(attrs).forEach(function (key) {
     if (attrs.hasOwnProperty(key)) {
       var dataAttrName = attrs[key].name;
-      var propName = dataAttrName.split(/(data-prop-|data-props-)/).pop();
+      if (!dataAttrName || typeof dataAttrName !== 'string') {
+        return false;
+      }
+      var propName = dataAttrName.split(/(data-props?-)/).pop();
       propName = _capetalize(propName);
       if (dataAttrName !== propName) {
         var propValue = attrs[key].nodeValue;
