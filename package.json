@@ -18,8 +18,8 @@
     "optimize": "uglifyjs $npm_package_main -bc -o --source-map",
     "minify": "uglifyjs $npm_package_main -cm -o $npm_package_minified_main",
     "lint": "eslint src/",
-    "test": "mocha --require test/helpers/setup.js",
-    "test:watch": "mocha --require test/helpers/setup.js -w",
+    "test": "jest",
+    "test:watch": "jest -w",
     "prepublish": "npm run build"
   },
   "babel": {
@@ -69,6 +69,7 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^7.0.1",
     "eslint-plugin-standard": "^3.0.1",
+    "istanbul": "^0.4.5",
     "jest-cli": "^20.0.4",
     "jsdom": "^11.0.0",
     "mocha": "^3.4.2",
@@ -85,5 +86,19 @@
   },
   "dependencies": {
     "simulant": "^0.2.2"
+  },
+  "jest": {
+    "setupFiles": [
+      "./test/helpers/setup.js"
+    ],
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "moduleDirectories": [
+      "node_modules"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js}"
+    ]
   }
 }

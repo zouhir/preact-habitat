@@ -3,11 +3,11 @@ import { expect } from 'chai';
 import simulant from 'simulant';
 
 import {
-  _propsToPassDown,
-  _hostDOMElms,
-  _getCurrentScriptTag,
-  _capetalize,
-} from '../src/lib/habitat';
+  collectPropsFromElement,
+  widgetDOMHostElements,
+  getExecutedScript,
+  camelcasize,
+} from '../src/lib';
 
 import habitat from '../src';
 
@@ -34,28 +34,33 @@ describe('Module API Specs', () => {
  */
 describe('Habitat Client Control Renderer', () => {
     afterEach(() => {
-        let widgetsClientMounted = _hostDOMElms({ value: 'my-widget' });
-        let widgetsDveloperMounted = _hostDOMElms({ name: 'data-widget-tv', value: 'tv-player' });
+        let widgetsClientMounted = widgetDOMHostElements('[data-widget="my-widget"]');
+        let widgetsDveloperMounted = widgetDOMHostElements('[data-widget-tv="tv-player"]');
         widgetsClientMounted.forEach(widget => {
             widget.innerHTML = ''
         })
         widgetsDveloperMounted.forEach(widget => {
             widget.innerHTML = ''
         })
-        document.querySelectorAll('.datatable')[0].innerHTML = 'LOADING BIG TABLE'
+        document.querySelectorAll('.datatable')[0].innerHTML = 'LOADING BIG TABLE';
+
+        [].forEach.call(document.querySelectorAll('.test'), queriedTag => {
+            document.getElementById('body').removeChild(queriedTag)
+        });
+
     });
-    it('should render the widget in 3 habitat elements', () => {
+    it('should inline the widget and render it once', () => {
       let hb = habitat(TitleComponent);
-      hb.render();
+      hb.render(null, {inline: true});
 
       let widgets = document.querySelectorAll('.test');
       expect(document.body.innerHTML).to.contain(TEST_TITLE);
-      expect(widgets.length).to.equal(3);
+      expect(widgets.length).to.equal(1);
 
     });
     it('should render the widget in 3 habitat elements', () => {
       let hb = habitat(TitleComponent);
-      hb.render({ value: 'my-widget' });
+      hb.render('[data-widget="my-widget"]');
 
       let widgets = document.querySelectorAll('.test');
       expect(document.body.innerHTML).to.contain(TEST_TITLE);
@@ -64,7 +69,7 @@ describe('Habitat Client Control Renderer', () => {
     });
     it('should render 2 custom attributes habitat elements', () => {
       let hb = habitat(TitleComponent);
-      hb.render({ name: 'data-widget-tv', value: 'tv-player' });
+      hb.render('[data-widget-tv="tv-player"]');
 
       let widgets = document.querySelectorAll('.test');
       expect(document.body.innerHTML).to.contain(TEST_TITLE);
@@ -74,7 +79,7 @@ describe('Habitat Client Control Renderer', () => {
 
     it('should render 1 widget and not clean its content', () => {
       let hb = habitat(TitleComponent);
-      hb.render({ name: 'data-table-widget', value: 'datatable', clean: false });
+      hb.render('[data-table-widget="datatable"]');
 
       let widgets = document.querySelectorAll('.datatable');
       expect(document.body.innerHTML).to.contain('LOADING BIG TABLE');
@@ -84,7 +89,7 @@ describe('Habitat Client Control Renderer', () => {
 
     it('should render 1 widget and clean loading conten tent', () => {
       let hb = habitat(TitleComponent);
-      hb.render({ name: 'data-table-widget', value: 'datatable', clean: true});
+      hb.render('[data-table-widget="datatable"]', { clean: true });
 
       let widgets = document.querySelectorAll('.datatable');
       expect(widgets[0].innerHTML).to.not.contain('LOADING BIG TABLE');
@@ -95,18 +100,5 @@ describe('Habitat Client Control Renderer', () => {
     it('should cleanup the DOM after each test', () => {
         let w2 = document.querySelectorAll('.test');
         expect(w2.length).to.equal(0);
-    });
-    it('should render if document readyState is complete', () => {
-      Object.defineProperty(document, "readyState", {
-        configurable: true,
-        get() { return "complete"; }
-      });
-      expect(document.readyState).to.equal('complete');
-
-      let hb = habitat(TitleComponent);
-      hb.render();
-
-      let widgets = document.querySelectorAll('.test');
-      expect(document.body.innerHTML).to.contain(TEST_TITLE);
     });
 });
