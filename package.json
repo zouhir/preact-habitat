@@ -19,7 +19,8 @@
     "minify": "uglifyjs $npm_package_main -cm -o $npm_package_minified_main",
     "lint": "eslint src/",
     "test": "jest",
-    "test:watch": "jest -w",
+    "test:watch": "jest --watchAll",
+    "coverage": "jest --coverage",
     "prepublish": "npm run build"
   },
   "babel": {
@@ -75,6 +76,7 @@
     "mocha": "^3.4.2",
     "npm-run-all": "^4.0.2",
     "preact": "^8.1.0",
+    "regenerator-runtime": "^0.10.5",
     "replace-bundle-webpack-plugin": "^1.0.0",
     "rimraf": "^2.6.1",
     "rollup": "^0.41.6",
@@ -88,14 +90,11 @@
     "simulant": "^0.2.2"
   },
   "jest": {
-    "setupFiles": [
-      "./test/helpers/setup.js"
-    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
     "moduleFileExtensions": [
       "js"
-    ],
-    "moduleDirectories": [
-      "node_modules"
     ],
     "collectCoverageFrom": [
       "src/**/*.{js}"
