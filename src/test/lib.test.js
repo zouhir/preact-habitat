@@ -100,4 +100,63 @@ describe('Helper utility: collecting Client DOM props with collectPropsFromEleme
     // document must find current script tag
     expect(propsObj).toEqual(expectedProps);
   });
+
+  it('should collect props from prop script', () => {
+    document.body.innerHTML = `
+      <div id="parent" data-props-name="preact">
+        <script type="text/props">
+          {
+            "name": "zouhir"
+          }
+        </script>
+
+        <script type="text/javascript">
+
+        </script>
+      </div>
+    `
+    const habitatDiv = document.getElementById('parent');
+    
+    const propsObj = collectPropsFromElement(habitatDiv);
+
+    const expectedProps = {
+      "name": "zouhir"
+    }
+    // document must find current script tag
+    expect(propsObj).toEqual(expectedProps);
+  });
+
+
+  it('should collect props from prop multiple scripts', () => {
+    document.body.innerHTML = `
+      <div id="parent" data-props-lib-name="preact-habitat">
+        <script type="text/props">
+          {
+            "dev": "zouhir"
+          }
+        </script>
+
+        <script type="text/props">
+          {
+            "lib": "preact"
+          }
+        </script>
+
+        <script type="text/javascript">
+
+        </script>
+      </div>
+    `
+    const habitatDiv = document.getElementById('parent');
+    
+    const propsObj = collectPropsFromElement(habitatDiv);
+
+    const expectedProps = {
+      "libName": "preact-habitat",
+      "dev": "zouhir",
+      "lib": "preact"
+    }
+    // document must find current script tag
+    expect(propsObj).toEqual(expectedProps);
+  });
 })

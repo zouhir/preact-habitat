@@ -35,8 +35,7 @@ const getExecutedScript = () => {
 const collectPropsFromElement = element => {
   let attrs = element.attributes;
   let props = {};
-
-  // ceck for another props attached to the element
+  // collect from element
   Object.keys(attrs).forEach(key => {
     if (attrs.hasOwnProperty(key)) {
       let dataAttrName = attrs[key].name;
@@ -51,6 +50,21 @@ const collectPropsFromElement = element => {
       }
     }
   });
+
+  //check for child script text/props
+  [].forEach.call(element.getElementsByTagName('script'), scrp => {
+    let propsObj = {}
+    if(scrp.hasAttribute('type')) {
+      if (scrp.getAttribute('type') !== 'text/props' ) return;
+      try {
+        propsObj = JSON.parse(scrp.innerHTML);
+      } catch(e) {
+        throw new Error(e)
+      }
+      Object.assign(props, propsObj)
+    }
+  });  
+
   return props;
 };
 
