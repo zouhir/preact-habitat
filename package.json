@@ -1,11 +1,12 @@
 {
   "name": "preact-habitat",
-  "amdName": "PreactHabitat",
-  "version": "2.2.3",
+  "amdName": "preactHabitat",
+  "version": "3.0.0",
   "description": "A place for your happy widget in every DOM.",
-  "main": "dist/habitat.js",
-  "minified:main": "dist/habitat.min.js",
-  "jsnext:main": "src/index.js",
+  "main": "dist/preact-habitat.js",
+  "module": "dist/preact-habitat.es.js",
+  "jsnext:main": "dist/preact-redux.es.js",
+  "minified:main": "dist/preact-habitat.min.js",
   "homepage": "https://github.com/zouhir/preact-habitat/",
   "author": {
     "name": "Zouhir Chahoud",
@@ -13,10 +14,11 @@
     "url": "http://zouhir.org/"
   },
   "scripts": {
-    "build": "npm-run-all transpile optimize minify",
-    "transpile": "rollup -c rollup.config.js -m ${npm_package_main}.map -f umd -n $npm_package_amdName $npm_package_jsnext_main -o $npm_package_main",
-    "optimize": "uglifyjs $npm_package_main -bc -o --source-map",
-    "minify": "uglifyjs $npm_package_main -cm -o $npm_package_minified_main",
+    "build": "npm-run-all transpile:umd transpile:es optimize",
+    "transpile:umd": "rollup -c --environment FORMAT:umd",
+    "transpile:es": "rollup -c --environment FORMAT:es",
+    "optimize": "uglifyjs dist/preact-habitat.js -c --source-map --output dist/preact-habitat.min.js",
+    "minify": "",
     "lint": "eslint src/",
     "test": "jest",
     "test:watch": "jest --watchAll",
@@ -24,10 +26,7 @@
     "prepublish": "npm run build"
   },
   "babel": {
-    "presets": [
-      "es2015-minimal",
-      "stage-0"
-    ],
+    "presets": ["es2015-minimal", "stage-0"],
     "plugins": [
       "transform-class-properties",
       [
@@ -81,7 +80,10 @@
     "rimraf": "^2.6.1",
     "rollup": "^0.41.6",
     "rollup-plugin-babel": "^2.7.1",
-    "uglify-js": "^3.0.14"
+    "rollup-plugin-commonjs": "^8.1.0",
+    "rollup-plugin-es3": "^1.0.3",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "uglify-js": "^3.0.27"
   },
   "peerDependencies": {
     "preact": "*"
@@ -93,11 +95,7 @@
     "transform": {
       "^.+\\.js$": "babel-jest"
     },
-    "moduleFileExtensions": [
-      "js"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.{js}"
-    ]
+    "moduleFileExtensions": ["js"],
+    "collectCoverageFrom": ["src/**/*.{js}"]
   }
 }
