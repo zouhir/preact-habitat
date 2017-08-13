@@ -1,27 +1,24 @@
 <h1 align="center">
-  <img src="https://github.com/zouhir/preact-habitat/blob/master/docs/artwork.png?raw=true">
-   <br />
-    Preact Habitat
-  <br />
+  <img src="https://github.com/zouhir/preact-habitat/blob/master/docs/artworkv3.gif?raw=true" height=300px>
 </h1>
 <br />
 
-Preact habitat is a tiny (900Byte) module that will help you ship your Preact components & widgets to any world wide DOM page in a very easy and neat way.
+## Preact Habitat 
 
-> If you are looking for v2.x.x docs they're here
+A 900 Bytes module for that will make plugging in Preact components and widgets in any CMS or website as fun as lego!
 
-## <img src='https://github.com/zouhir/preact-habitat/blob/master/docs/artwork_2.png?raw=true.png' height=22 /> Demos
+### Demos
 
 
-## <img src='https://github.com/zouhir/preact-habitat/blob/master/docs/artwork_2.png?raw=true.png' height=22 /> Installation
+### Installation
 
 ```bash
 npm install --save preact-habitat
 ```
 
-## <img src='https://github.com/zouhir/preact-habitat/blob/master/docs/artwork_2.png?raw=true.png' height=22 />  Basic Usage Example
+### Core Features
 
-##### before diving in the docs
+### Basic Usage Example
 
 ```js
 import habitat from 'preact-habitat';
@@ -30,23 +27,44 @@ import WidgetAwesome from './components/WidgetAwesome';
 let habitat = habitat(WidgetAwesome);
 
 /**
-* other selecors options:
-* ".classname" for querying DOM element by its class name
-* "#div-id" for querying DOM element by its ID value
-* "[data-attribute-example='widget-here']" for querying DOM element by its data attribute name & val
+** other selecors options:
+**
+** ".classname"  for querying DOM element by its class name
+**
+** "#div-id"  for querying DOM element by its ID value
+**
+** "[data-attribute-example='widget-here']"  for querying DOM element by its data attribute name & val
+**
 **/
 
 habitat.render({
-  selector: '.some-class' // Searches and mounts in <div class="some-class"></div>
+  selector: '.some-class', // Searches and mounts in <div class="some-class"></div>
+  inline: false,
+  clean: false,
+  clientSpecified: false,
 });
 ```
 
-in `webpack.config.js` or other build tool, bundle output \ format should be UMD:
+in `webpack.config.js` or any other build tool bundle output format should be `UMD`:
 
 ```js
 output: {
   libraryTarget: 'umd'
 }
+```
+
+in the DOM you'd like to mount your widget in:
+
+```html
+<div class="some-class"> <!-- as specified in render, habitat will mount the component in this-->
+  <script type="text/props">
+    {
+      "title": "Widget Title passed as prop",
+      "theme": "red",
+      "anotherProp": "Thanks for trying this widget out!"
+    }
+  </script>
+</div>
 ```
 
 Now, build your production ready preact widget and you're all set, TADA! 🎉
@@ -63,30 +81,28 @@ import { h } form 'preact';
 import habitat from 'preact-habitat';
 
 const Widget = () => (<h1>Hello, World!</h1>)
-s
-/**
-** Note: pass the widget as habitat as habitat(Widget) not habitat(<Widget />);
-** thats a common error and woth noting :)
-**/
-let habitat = habitat(Widget);
+
+let habitat = habitat(Widget); // NOTE: pass Widget and not <Widget />
 
 habitat.render({
   ...
 });
 ```
 
-
 ### render(options)
 
 render function accepts an options Object which supports the following properties:
 
 #### option.selector
+
 >String: `.myclass`, `#myid`, `[data-selector="my-data-attr"]`
+
 DOM Element selector used to retrieve the DOM elements you want to mount the widget in
 
 #### option.inline
 > Boolean: true || false (default)
-Set to true if you want to use the parent DOM node as a host for your widget without specifing any selectors example:
+
+Set to true if you want to use the parent DOM node as a host for your widget without specifing any selectors.
 
 example:
 
@@ -101,7 +117,7 @@ example:
 #### option.clean
 > Boolean: true || false (default)
 
-clean will remove all the innerHTML of the widget host element
+clean will remove all the innerHTML from the HTMl element the widget will mount in.
 
 example:
 
@@ -128,6 +144,27 @@ This option allows who ever using the script to specifit the selector which they
 <script async src="cdn.preactwidget..." data-mount-in=".beautiful-container"></script>
 ```
 
-## License
+### Passing Props
 
+There are 2 ways to pass props, either via data-attributes or text/props script tag
+
+#### via data-attribute
+
+the data attribute has to always start with `data-prop-` examples:
+
+`data-prop-name` will be available in your component as `name`
+`data-prop-version` will be available in your component as `version`
+`data-prop-theme-color` will be available in your component as `themeColor` *NOTE* the lowerCamelCase when there's a -
+
+```html
+<div class="beautiful-container" data-prop-name="preact habitat" data-prop-version="v3.0.0" data-prop-theme-color="green">
+  
+</div>
+```
+
+
+## License
 [MIT](LICENSE) - Copyright (c) [Zouhir Chahoud](http://zouhir.org)
+
+## Credits
+Artwork By: [Oleg Turbaba, Dribble](https://dribbble.com/turbaba)
