@@ -190,7 +190,7 @@ the data attribute has to always start with `data-prop-` examples:
 ```
 
 ## License
-[MIT](LICENSE) - Copyright (c) [Zouhir Chahoud](http://zouhir.org)
+[MIT](LICENSE) - Copyright (c) [Zouhir Chahoud](https://zouhir.org)
 
 ## Credits
 Artwork By: [Oleg Turbaba, Dribble](https://dribbble.com/turbaba)
