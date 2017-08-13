@@ -30,7 +30,7 @@ describe('Helper utility: Client DOM querying with widgetDOMHostElements', () =>
       <div data-widget="my-widget"></div>
       <div data-widget="my-widget"></div>
     `
-    const hostHabitats = widgetDOMHostElements("[data-widget='my-widget']", { clientSpecified: false, inline: false, clean: false });
+    const hostHabitats = widgetDOMHostElements({ selector: '[data-widget="my-widget"]', clientSpecified: false, inline: false, clean: false });
     // document must find current script tag
     expect(hostHabitats.length).toBe(3);
   });
@@ -41,7 +41,7 @@ describe('Helper utility: Client DOM querying with widgetDOMHostElements', () =>
       <div class="classy-widget"></div>
       <div class="classy-widget"></div>
     `
-    const hostHabitats = widgetDOMHostElements(".classy-widget", { clientSpecified: false, inline: false, clean: false });
+    const hostHabitats = widgetDOMHostElements({selector: '.classy-widget',  clientSpecified: false, inline: false, clean: false });
     // document must find current script tag
     expect(hostHabitats.length).toBe(3);
   });
@@ -50,7 +50,7 @@ describe('Helper utility: Client DOM querying with widgetDOMHostElements', () =>
     document.body.innerHTML = `
       <div id="idee-widget"></div>
     `
-    const hostHabitats = widgetDOMHostElements("#idee-widget", { clientSpecified: false, inline: false, clean: false });
+    const hostHabitats = widgetDOMHostElements({ selector: '#idee-widget', clientSpecified: false, inline: false, clean: false });
     // document must find current script tag
     expect(hostHabitats.length).toBe(1);
   });

@@ -1,140 +1,132 @@
 <h1 align="center">
   <img src="https://github.com/zouhir/preact-habitat/blob/master/artwork.png?raw=true">
    <br />
-  Preact Habitat
+    Preact Habitat
   <br />
 </h1>
 <br />
 
-Preact habitat is a 1KB module that will help you ship your Preact components \ widget to any world wide DOM page in a very easy and neat way.
+Preact habitat is a tiny (900Byte) module that will help you ship your Preact components & widgets to any world wide DOM page in a very easy and neat way.
 
-## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 /> Demos
+> If you are looking for v2.x.x docs they're here
 
-- *Simple Login* 🔑 [link](https://preact-habitat-inline.netlify.com/)
+## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=22 /> Demos
 
-- *Youtube Players* ▶️ [link](https://preact-habitat-youtube.netlify.com/)
 
-## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 /> Use Case
-
-If you have built a [Preact](https://preactjs.com/) component (eg: Video, login, signup or booking components) and would like to bundle it and ship it to be loaded in multiple web applications, blogs without with mostly 0 or very minimal configuration from your package host, then preact-habitat is what you are after!
-
-## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 /> Installation
+## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=22 /> Installation
 
 ```bash
-
 npm install --save preact-habitat
-
 ```
 
-## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 />  How to use
+## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=22 />  Basic Usage Example
 
-### Render your component using Habitat
-> ✨ NEW: Now habitat support multiple widget rendering✨
+##### before diving in the docs
 
 ```js
 import habitat from 'preact-habitat';
-import WidgetAwesomeOne from './components/WidgetAwesome';
-import WidgetAwesomeTwo from './components/WidgetAwesome';
-import WidgetAwesomeThree from './components/WidgetAwesome';
+import WidgetAwesome from './components/WidgetAwesome';
 
-let habitatOne = habitat(WidgetAwesomeOne);
-let habitatTwo = habitat(WidgetAwesomeTwo);
-let habitatThree = habitat(WidgetAwesomeTwo);
+let habitat = habitat(WidgetAwesome);
 
-habitatOne.render();
-habitatTwo.render();
-habitatThree.render({ name: 'data-mount-here', value: 'mount-number-three' });
+/**
+* other selecors options:
+* ".classname" for querying DOM element by its class name
+* "#div-id" for querying DOM element by its ID value
+* "[data-attribute-example='widget-here']" for querying DOM element by its data attribute name & val
+**/
+
+habitat.render({
+  selector: '.some-class' // Searches and mounts in <div class="some-class"></div>
+});
 ```
 
-
-### Set the build output library type to UMD
-
-usage example in Webpack:
+in `webpack.config.js` or other build tool, bundle output \ format should be UMD:
 
 ```js
 output: {
-  ...
   libraryTarget: 'umd'
 }
-
 ```
 
-### Inline Client Integration
+Now, build your production ready preact widget and you're all set, TADA! 🎉
 
-*Assuming your bundle available on: `https://cdn.awesome/widget.js`*
+## API Docs
 
-```html
-<div id="external-widget-place">
-  <script async src="https://cdn.awesome/widget.js"></script>
-</div>
-```
+### habitat(...)
 
-> ✨ Pass props! ✨
+accepts a single Preact component as its only argument
 
-```html
-<div id="external-widget-place" data-prop-key="1x2uus88z" data-prop-theme="red">
-  <script async src="https://cdn.awesome/widget.js"></script>
-</div>
-```
-
-### Mount multiple widgets (not inline)
-
-> ✨ NEW:  data-mount script attr ✨
-
-```html
-<body>
-<div data-widget="awesome-widgets" id="widget-one" data-prop-video-id="123123" data-prop-auto-play="false">
-</div>
-
-<div data-widget="awesome-widgets" id="widget-two" data-prop-video-id="898989" data-prop-auto-play="true">
-...
-...
-...
-...
-...
-<script async src="https://cdn.awesome/widget.js" data-mount="awesome-widgets"></script>
-</body>
-```
-
-### Mount multiple widgets (developer specified divs)
-```html
-<body>
-<div data-widget-here-please="widget-number-three" id="widget-one" data-prop-video-id="123123" data-prop-auto-play="false">
-</div>
-<script async src="https://cdn.awesome/widget.js"></script>
-</body>
-```
+##### example: 
 ```js
+import { h } form 'preact';
 import habitat from 'preact-habitat';
-import WidgetAwesomeThree from './components/WidgetAwesome';
 
-let habitatThree = habitat(WidgetAwesomeTwo);
-habitatThree.render({ name: 'data-widget-here-please', value: 'widget-number-three', inline: false });
+const Widget = () => (<h1>Hello, World!</h1>)
+s
+/**
+** Note: pass the widget as habitat as habitat(Widget) not habitat(<Widget />);
+** thats a common error and woth noting :)
+**/
+let habitat = habitat(Widget);
 
+habitat.render({
+  ...
+});
 ```
-### Render Method API
-
-Render method accepts an *Object* and supports 3 properties
-
-- name: HTML tag attribute name, Srting, default `data-mount`.
-- value: HTML tag attribute value, Strinf, default null.
-- inline: Enable \ Disable inline mounting for the widget, Boolean.
 
 
-### Prop Names Rules
-Now habitat allow you to pass props from HTML to your preact components, here are the rules:
+### render(options)
 
-- *starts with* `data-prop-`
-- *all lower case* `data-prop-videoid` === `this.prop.videoid`
-- *add dashes for camelCase* 🐫 `data-prop-video-id` === `this.prop.videoId`
+render function accepts an options Object which supports the following properties:
 
+#### option.selector
+>String: `.myclass`, `#myid`, `[data-selector="my-data-attr"]`
+DOM Element selector used to retrieve the DOM elements you want to mount the widget in
 
-## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 /> Thank You!, But..
+#### option.inline
+> Boolean: true || false (default)
+Set to true if you want to use the parent DOM node as a host for your widget without specifing any selectors example:
 
-1. Please make sure your widget size is reasonable, bloated and big size bundles make puppies sick 🐶 😔
+example:
 
-2. Feel free to fork, contribute or give it a 🌟. Open an issue or [chat with me](https://twitter.com/_zouhir) if you have any questions.
+```html
+<div class="beautiful-container">
+  <!-- inline set to true will make this widget render in it's parent 
+      wrapper class="beautiful-container" without using selector option-->
+  <script async src="cdn.preactwidget..."></script>
+</div>
+```
 
+#### option.clean
+> Boolean: true || false (default)
+
+clean will remove all the innerHTML of the widget host element
+
+example:
+
+if we set the widget to be mounted inside the selector ".beautiful-container" with {clean: true} it will remove the Loading div as soon as it renders.
+
+```html
+<div class="beautiful-container">
+  <div class="loader">LOADING...</div>
+</div>
+
+<script async src="cdn.preactwidget..."></script>
+```
+
+#### option.clientSpecified
+> Boolean: true || false (default)
+
+This option allows who ever using the script to specifit the selector which they'd like to mount the widget in
+
+```html
+<div class="beautiful-container">
+  <div class="loader">LOADING...</div>
+</div>
+
+<script async src="cdn.preactwidget..." data-mount-in=".beautiful-container"></script>
+```
 
 ## License
 

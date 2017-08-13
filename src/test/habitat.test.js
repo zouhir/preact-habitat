@@ -41,7 +41,7 @@ describe("Habitat Client Control Renderer", () => {
         <script></script>
         `;
     let hb = habitat(TitleComponent);
-    hb.render(null, { inline: true });
+    hb.render({ inline: true });
 
     let widgets = document.querySelectorAll(".test");
     expect(document.body.innerHTML).toContain(TEST_TITLE);
@@ -54,7 +54,7 @@ describe("Habitat Client Control Renderer", () => {
             <div data-widget="my-widget"></div>
         `;
     let hb = habitat(TitleComponent);
-    hb.render('[data-widget="my-widget"]');
+    hb.render({ selector: '[data-widget="my-widget"]' });
 
     let widgets = document.querySelectorAll(".test");
     expect(document.body.innerHTML).toContain(TEST_TITLE);
@@ -66,7 +66,7 @@ describe("Habitat Client Control Renderer", () => {
       <div data-widget-tv="tv-player"></div>
     `
     let hb = habitat(TitleComponent);
-    hb.render('[data-widget-tv="tv-player"]');
+    hb.render({selector: '[data-widget-tv="tv-player"]'});
 
     let widgets = document.querySelectorAll(".test");
     expect(document.body.innerHTML).toContain(TEST_TITLE);
@@ -78,7 +78,7 @@ describe("Habitat Client Control Renderer", () => {
       <div data-table-widget="datatable">LOADING BIG TABLE</div>
     `
     let hb = habitat(TitleComponent);
-    hb.render('[data-table-widget="datatable"]');
+    hb.render({ selector: '[data-table-widget="datatable"]' });
 
     let widgets = document.querySelectorAll('[data-table-widget="datatable"]');
     expect(document.body.innerHTML).toContain("LOADING BIG TABLE");

@@ -90,8 +90,7 @@ const getHabitatSelectorFromClient = (currentScript) => {
  * @return {Array}        Array of matching habitats
  */
 const widgetDOMHostElements = (
-  selector = null,
-  { inline = false, clientSpecified = false, clean = false } = {}
+  { selector, inline, clientSpecified, clean}
 ) => {
   let hostNodes = [];
   let currentScript = getExecutedScript();
@@ -101,7 +100,6 @@ const widgetDOMHostElements = (
     if (clean) node.innerHTML = "";
     hostNodes.push(parentNode);
   }
-
   if (clientSpecified === true && !selector) {
     // user did not specify where to mount - get it from script tag attributes
     selector = `[data-widget='${getHabitatSelectorFromClient(currentScript)}']`
