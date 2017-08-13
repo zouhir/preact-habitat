@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Light Weight Preact Widgets</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+	<meta name="description" content="preact-widgets-boilerplate">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="apple-mobile-web-app-title" content="preact-boilerplate">
+	<meta name="application-name" content="preact-widgets-boilerplate">
+
+	<style media="screen">
+		.bold-link,h1,h2{font-weight:700}*{box-sizing:border-box}body{background:#F4F1EA;font-family:sans-serif;color:#37394C;padding:15px;line-height:24px}.container{width:100%;max-width:900px;margin:0 auto}.logo{margin:0 auto;display:block;width:200px}.logo img{max-width:100%}h1{font-size:30px;text-align:center}h2{font-size:24px;text-align:left}.demo-box{border:2px dashed #CCC;padding:30px 10px 10px;position:relative; margin-bottom:70px;}.demo-box sup{position:absolute;size:9px;opacity:.7;top:4px;left:10px}.demo-box-1{width:100%;max-width:400px;margin:0 auto}.row-center{width:100%;display:block;position:relative;margin-bottom:15px;text-align:center}.row-center a{display:inline-block}.bold-link{color:#269FAD;margin-right:30px}
+	</style>
+
+</head>
+<body>
+	<div class="container">
+
+	  <div class="logo">
+	    <img src="https://github.com/zouhir/preact-habitat/raw/master/artwork.png?raw=true" alt="Preact Habitat" />
+	  </div>
+	  <h1>Preact Habitat</h1>
+	  <div class="row-center">
+	    <a class="github-button" href="https://github.com/zouhir/preact-habitat" data-icon="octicon-star" data-style="mega" data-count-href="/zouhir/preact-habitat/stargazers" data-count-api="/repos/zouhir/preact-habitat#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star zouhir/preact-habitat on GitHub">Star</a>
+	  </div>
+		<div class="row-center">
+			<a href="https://github.com/zouhir/preact-widgets-boilerplate" class="bold-link">Demo \ Example Repo</a>
+			<a href="https://github.com/zouhir/preact-habitat" class="bold-link">Habitat Repo</a>
+		</div>
+	  <p>
+	    Preact habitat is a 1kb module that will help you ship your Preact components to any world wide DOM page in a very easy and neat way.
+	  </p>
+	  <h2>Demo</h2>
+
+		<!-- that's how we embed the widget using habitat -->
+	  <div class="demo-box" id="thrid-party-login-wrapper">
+      <sup>total: 18kb minified, 7kb gzipped</sup>
+      <script type="text/props">
+        {
+          "title": "Codepen App Login",
+          "btnAccentColor": "#FFBB41",
+          "btnText": "Sign in NOW!"
+        }
+      </script>
+			<!-- THAT IS ALL YOU NEED -->
+			<script async src="/build/bundle.js" type="text/javascript"></script>
+
+	  </div>
+		<!-- //end that's how we embed the widget using habitat -->
+
+		<p>Built with 💛 and <a href="https://preactjs.com/">Preact</a> by <a href="http://zouhir.org">Zouhir</a></p>
+	</div>
+
+
+	<script async defer src="https://buttons.github.io/buttons.js"></script>
+</body>
+</html>

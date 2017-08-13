@@ -1,0 +1,129 @@
+// widgets colors variables
+$beige: #F4F1EA;
+$yellow: #FFBB41;
+$black: #37394C;
+$google-red: #EA4335;
+$facebook-blue: #3b5998;
+$white-sand: #FAF8F5;
+
+.signinWidget {
+  * {
+    box-sizing: border-box;
+  }
+  position: relative;
+  border-radius: 6px;
+  background: #FFF;
+  box-shadow: 0 10px 20px 0 rgba(0,0,0,0.10);
+  width: 100%;
+  max-width: 500px;
+  margin: 30px auto 30px auto;
+  padding: 15px;
+  font-family: sans-serif;
+  hr {
+    opacity: 0.2;
+    margin: 40px auto;
+    position: relative;
+    &:before {
+      content: 'OR';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: #FFF;
+      padding: 0px 10px;
+    }
+  }
+  h3 {
+    font-family: sans-serif;
+    color: $black;
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+  p {
+    font-size: 14px;
+    margin-bottom: 15px;
+    line-height: 18px;
+  }
+  .colOne {
+    width: 40%;
+    padding-right: 20px;
+  }
+  .colTwo {
+    width: 60%;
+  }
+  input[type="text"] , input[type="password"] {
+    height: 40px;
+    line-height: 38px;
+    width: 100%;
+    background: $white-sand;
+    border: none;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    margin: 15px auto;
+    display: block;
+    font-size: 13px;
+    font-weight: 100;
+    padding: 0 12px;
+  }
+}
+
+.basebtn {
+  height: 40px;
+  width: 100%;
+  max-width: 230px;
+  font-family: sans-serif;
+  text-transform: uppercase;
+  font-size: 12px;
+  text-align: center;
+  line-height: 40px;
+  text-decoration: none;
+  border-radius: 3px;
+  color: #FFF;
+  &.google {
+    background: $google-red;
+    margin: 15px auto;
+    display: block;
+  }
+
+  &.facebook {
+    background: $facebook-blue;
+    margin: 15px auto;
+    display: block;
+  }
+
+  &.default {
+    margin: 0px 0 15px 0;
+    display: block;
+  }
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 500px;
+  margin: 10px auto;
+  overflow: hidden;
+  &:last-child{
+    margin-bottom: 0px;
+  }
+}
+
+.note {
+  font-family: sans-serif;
+  color: $black;
+  font-size: 13px;
+  a {
+    color: $yellow;
+    opacity: 1;
+  }
+}
+
+.formFooter {
+  font-family: sans-serif;
+  color: $black;
+  opacity: 1;
+  font-size: 13px;
+  display: block;
+  width: 100%;
+  margin-bottom: 15px;
+  color: $yellow;
+}

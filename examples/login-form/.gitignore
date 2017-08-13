@@ -1,0 +1,17 @@
+# stupid files
+*.swp
+*~
+*.log
+/*.js.map
+.DS_Store
+
+
+node_modules/
+
+# ignore build
+build/
+
+# ignore test coverage
+coverage.data
+coverage/
+dev_modules/
