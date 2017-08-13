@@ -1,15 +1,19 @@
-import babel from 'rollup-plugin-babel'
-import preset from 'babel-preset-es2015-minimal-rollup'
+import buble from 'rollup-plugin-buble';
+import fs from 'fs';
+
+const pkg = JSON.parse(fs.readFileSync('./package.json'));
 
 export default {
-  external: [ 'preact' ],
-  plugins: [
-    babel({
-      babelrc: false,
-      sourceMap: true,
-      exclude: 'node_modules/**',
-      presets: ['stage-0'],
-      plugins: [].concat(preset.plugins)
-    })
-  ]
-}
+	entry: 'src/index.js',
+	useStrict: false,
+  sourceMap: true,
+  external: ["preact"],
+	plugins: [
+		buble()
+	],
+	targets: [
+    { dest: pkg.main, format: 'cjs' },
+		{ dest: pkg.module, format: 'es' },
+		{ dest: pkg['main:umd'], format: 'umd', moduleName: pkg.amdName }
+	]
+};

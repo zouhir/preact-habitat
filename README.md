@@ -1,141 +1,170 @@
 <h1 align="center">
-  <img src="https://github.com/zouhir/preact-habitat/blob/master/artwork.png?raw=true">
-   <br />
-  Preact Habitat
-  <br />
+  <img src="https://github.com/zouhir/preact-habitat/blob/master/docs/artworkv3.gif?raw=true" height=300px>
 </h1>
 <br />
 
-Preact habitat is a 756Byte module that will help you ship your Preact components \ widget to any world wide DOM page in a very easy and neat way.
+## Preact Habitat 
 
-## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 /> Demos
+A 900 Bytes module for that will make plugging in Preact components and widgets in any CMS or website as fun as lego!
 
-- *Simple Login* 🔑 [link](https://preact-habitat-inline.netlify.com/)
+### Demos
 
-- *Youtube Players* ▶️ [link](https://preact-habitat-youtube.netlify.com/)
 
-## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 /> Use Case
-
-If you have built a [Preact](https://preactjs.com/) component (eg: Video, login, signup or booking components) and would like to bundle it and ship it to be loaded in multiple web applications, blogs without with mostly 0 or very minimal configuration from your package host, then preact-habitat is what you are after!
-
-## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 /> Installation
+### Installation
 
 ```bash
-
 npm install --save preact-habitat
-
 ```
 
-## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 />  How to use
+### Core Features
 
-### Render your component using Habitat
-> ✨ NEW: Now habitat support multiple widget rendering✨
+### Basic Usage Example
 
 ```js
 import habitat from 'preact-habitat';
-import WidgetAwesomeOne from './components/WidgetAwesome';
-import WidgetAwesomeTwo from './components/WidgetAwesome';
-import WidgetAwesomeThree from './components/WidgetAwesome';
+import WidgetAwesome from './components/WidgetAwesome';
 
-let habitatOne = habitat(WidgetAwesomeOne);
-let habitatTwo = habitat(WidgetAwesomeTwo);
-let habitatThree = habitat(WidgetAwesomeTwo);
+let habitat = habitat(WidgetAwesome);
 
-habitatOne.render();
-habitatTwo.render();
-habitatThree.render({ name: 'data-mount-here', value: 'mount-number-three' });
+/**
+** other selecors options:
+**
+** ".classname"  for querying DOM element by its class name
+**
+** "#div-id"  for querying DOM element by its ID value
+**
+** "[data-attribute-example='widget-here']"  for querying DOM element by its data attribute name & val
+**
+**/
+
+habitat.render({
+  selector: '.some-class', // Searches and mounts in <div class="some-class"></div>
+  inline: false,
+  clean: false,
+  clientSpecified: false,
+});
 ```
 
-
-### Set the build output library type to UMD
-
-usage example in Webpack:
+in `webpack.config.js` or any other build tool bundle output format should be `UMD`:
 
 ```js
 output: {
-  ...
   libraryTarget: 'umd'
 }
-
 ```
 
-### Inline Client Integration
-
-*Assuming your bundle available on: `https://cdn.awesome/widget.js`*
+in the DOM you'd like to mount your widget in:
 
 ```html
-<div id="external-widget-place">
-  <script async src="https://cdn.awesome/widget.js"></script>
+<div class="some-class"> <!-- as specified in render, habitat will mount the component in this-->
+  <script type="text/props">
+    {
+      "title": "Widget Title passed as prop",
+      "theme": "red",
+      "anotherProp": "Thanks for trying this widget out!"
+    }
+  </script>
 </div>
 ```
 
-> ✨ Pass props! ✨
+Now, build your production ready preact widget and you're all set, TADA! 🎉
 
-```html
-<div id="external-widget-place" data-prop-key="1x2uus88z" data-prop-theme="red">
-  <script async src="https://cdn.awesome/widget.js"></script>
-</div>
-```
+## API Docs
 
-### Mount multiple widgets (not inline)
+### habitat(...)
 
-> ✨ NEW:  data-mount script attr ✨
+accepts a single Preact component as its only argument
 
-```html
-<body>
-<div data-widget="awesome-widgets" id="widget-one" data-prop-video-id="123123" data-prop-auto-play="false">
-</div>
-
-<div data-widget="awesome-widgets" id="widget-two" data-prop-video-id="898989" data-prop-auto-play="true">
-...
-...
-...
-...
-...
-<script async src="https://cdn.awesome/widget.js" data-mount="awesome-widgets"></script>
-</body>
-```
-
-### Mount multiple widgets (developer specified divs)
-```html
-<body>
-<div data-widget-here-please="widget-number-three" id="widget-one" data-prop-video-id="123123" data-prop-auto-play="false">
-</div>
-<script async src="https://cdn.awesome/widget.js"></script>
-</body>
-```
+##### example: 
 ```js
+import { h } form 'preact';
 import habitat from 'preact-habitat';
-import WidgetAwesomeThree from './components/WidgetAwesome';
 
-let habitatThree = habitat(WidgetAwesomeTwo);
-habitatThree.render({ name: 'data-widget-here-please', value: 'widget-number-three', inline: false });
+const Widget = () => (<h1>Hello, World!</h1>)
 
+let habitat = habitat(Widget); // NOTE: pass Widget and not <Widget />
+
+habitat.render({
+  ...
+});
 ```
-### Render Method API
 
-Render method accepts an *Object* and supports 3 properties
+### render(options)
 
-- name: HTML tag attribute name, Srting, default `data-mount`.
-- value: HTML tag attribute value, Strinf, default null.
-- inline: Enable \ Disable inline mounting for the widget, Boolean.
+render function accepts an options Object which supports the following properties:
 
+#### option.selector
 
-### Prop Names Rules
-Now habitat allow you to pass props from HTML to your preact components, here are the rules:
+>String: `.myclass`, `#myid`, `[data-selector="my-data-attr"]`
 
-- *starts with* `data-prop-`
-- *all lower case* `data-prop-videoid` === `this.prop.videoid`
-- *add dashes for camelCase* 🐫 `data-prop-video-id` === `this.prop.videoId`
+DOM Element selector used to retrieve the DOM elements you want to mount the widget in
 
+#### option.inline
+> Boolean: true || false (default)
 
-## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=24 /> Thank You!, But..
+Set to true if you want to use the parent DOM node as a host for your widget without specifing any selectors.
 
-1. Please make sure your widget size is reasonable, bloated and big size bundles make puppies sick 🐶 😔
+example:
 
-2. Feel free to fork, contribute or give it a 🌟. Open an issue or [chat with me](https://twitter.com/_zouhir) if you have any questions.
+```html
+<div class="beautiful-container">
+  <!-- inline set to true will make this widget render in it's parent 
+      wrapper class="beautiful-container" without using selector option-->
+  <script async src="cdn.preactwidget..."></script>
+</div>
+```
+
+#### option.clean
+> Boolean: true || false (default)
+
+clean will remove all the innerHTML from the HTMl element the widget will mount in.
+
+example:
+
+if we set the widget to be mounted inside the selector ".beautiful-container" with {clean: true} it will remove the Loading div as soon as it renders.
+
+```html
+<div class="beautiful-container">
+  <div class="loader">LOADING...</div>
+</div>
+
+<script async src="cdn.preactwidget..."></script>
+```
+
+#### option.clientSpecified
+> Boolean: true || false (default)
+
+This option allows who ever using the script to specifit the selector which they'd like to mount the widget in
+
+```html
+<div class="beautiful-container">
+  <div class="loader">LOADING...</div>
+</div>
+
+<script async src="cdn.preactwidget..." data-mount-in=".beautiful-container"></script>
+```
+
+### Passing Props
+
+There are 2 ways to pass props, either via data-attributes or text/props script tag
+
+#### via data-attribute
+
+the data attribute has to always start with `data-prop-` examples:
+
+`data-prop-name` will be available in your component as `name`
+`data-prop-version` will be available in your component as `version`
+`data-prop-theme-color` will be available in your component as `themeColor` *NOTE* the lowerCamelCase when there's a -
+
+```html
+<div class="beautiful-container" data-prop-name="preact habitat" data-prop-version="v3.0.0" data-prop-theme-color="green">
+  
+</div>
+```
 
 
 ## License
-
 [MIT](LICENSE) - Copyright (c) [Zouhir Chahoud](http://zouhir.org)
+
+## Credits
+Artwork By: [Oleg Turbaba, Dribble](https://dribbble.com/turbaba)

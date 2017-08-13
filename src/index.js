@@ -1,7 +1,4 @@
-import {
-  _hostDOMElms,
-  _render
-} from "./lib/habitat";
+import { widgetDOMHostElements, _render } from "./lib";
 
 const habitat = Widget => {
   // Widget represents the Preact component we need to mount
@@ -11,20 +8,37 @@ const habitat = Widget => {
   // preact root render helper
   let root = null;
 
-  let render = ({ name = "data-widget", value = null, inline = true, clean = true } = {}) => {
-    let elements = _hostDOMElms({ name, value, inline, clean });
+  let render = (
+    {
+      selector = null,
+      inline = false,
+      clean = false,
+      clientSpecified = false
+    } = {}
+  ) => {
+    let elements = widgetDOMHostElements({
+      selector,
+      inline,
+      clean,
+      clientSpecified
+    });
     if (!hasRendered && elements.length > 0) {
       hasRendered = true;
       return _render(widget, elements, root);
     }
     // document is not ready - subscurib to readystatechange event
-    document.addEventListener('DOMContentLoaded', (e) => {
-      let elements = _hostDOMElms({ name, value, inline, clean });
+    document.addEventListener("DOMContentLoaded", e => {
       if (!hasRendered && elements.length > 0) {
+        let elements = widgetDOMHostElements({
+          selector,
+          inline,
+          clean,
+          clientSpecified
+        });
         hasRendered = true;
         return _render(widget, elements, root);
       }
-    })
+    });
   };
 
   return { render };
