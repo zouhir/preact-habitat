@@ -157,12 +157,30 @@ This option allows who ever using the script to specifit the selector which they
 
 There are 2 ways to pass props, either via data-attributes or text/props script tag
 
+#### via props script
+
+Simply add a `<script>` tag with `type="type/props" and ensure the content is valid JSON. multiple script tags will be merged together and passed down.
+
+```html
+<div class="beautiful-container" data-prop-name="preact habitat" data-prop-version="v3.0.0" data-prop-theme-color="green">
+  <script type="text/props">
+    {
+      "name": "preact habitat",
+      "version":"v3.0.0",
+      "themeColor": "green"
+    }
+  </script>
+</div>
+```
+
 #### via data-attribute
 
 the data attribute has to always start with `data-prop-` examples:
 
 `data-prop-name` will be available in your component as `name`
+
 `data-prop-version` will be available in your component as `version`
+
 `data-prop-theme-color` will be available in your component as `themeColor` *NOTE* the lowerCamelCase when there's a -
 
 ```html
