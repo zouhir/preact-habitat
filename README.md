@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://github.com/zouhir/preact-habitat/blob/master/artwork.png?raw=true">
+  <img src="https://github.com/zouhir/preact-habitat/blob/master/docs/artwork.png?raw=true">
    <br />
     Preact Habitat
   <br />
@@ -10,16 +10,16 @@ Preact habitat is a tiny (900Byte) module that will help you ship your Preact co
 
 > If you are looking for v2.x.x docs they're here
 
-## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=22 /> Demos
+## <img src='https://github.com/zouhir/preact-habitat/blob/master/docs/artwork_2.png?raw=true.png' height=22 /> Demos
 
 
-## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=22 /> Installation
+## <img src='https://github.com/zouhir/preact-habitat/blob/master/docs/artwork_2.png?raw=true.png' height=22 /> Installation
 
 ```bash
 npm install --save preact-habitat
 ```
 
-## <img src='https://github.com/zouhir/preact-habitat/blob/master/artwork_2.png?raw=true.png' height=22 />  Basic Usage Example
+## <img src='https://github.com/zouhir/preact-habitat/blob/master/docs/artwork_2.png?raw=true.png' height=22 />  Basic Usage Example
 
 ##### before diving in the docs
 
