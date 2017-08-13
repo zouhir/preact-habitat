@@ -1,7 +1,7 @@
 {
   "name": "preact-habitat",
   "amdName": "preactHabitat",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "A place for your happy widget in every DOM.",
   "main": "dist/preact-habitat.js",
   "module": "dist/preact-habitat.es.js",
@@ -18,7 +18,6 @@
     "build": "npm-run-all clean transpile minify",
     "transpile": "rollup -c",
     "minify": "uglifyjs $npm_package_main -cm toplevel -o $npm_package_main -p relative --in-source-map ${npm_package_main}.map --source-map ${npm_package_main}.map && uglifyjs $npm_package_main_umd -cm -o $npm_package_main_umd -p relative --in-source-map ${npm_package_main_umd}.map --source-map ${npm_package_main_umd}.map",
-    "lint": "eslint src/",
     "test": "jest",
     "test:watch": "jest --watchAll",
     "coverage": "jest --coverage",
