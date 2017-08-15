@@ -30,6 +30,12 @@ npm install --save preact-habitat
 
 ### Core Features
 
+- 2 ways to passing props from DOM.
+- Multiple rendering options.
+- Light weight ( < 1KB ).
+- Compatible with React widgetes through preact-compat.
+- In use in high traffic web applications.
+
 ### Basic Usage Example
 
 ```js
