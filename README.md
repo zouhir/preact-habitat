@@ -18,6 +18,9 @@ A 900 Bytes module for that will make plugging in Preact components and widgets 
 
 ### Demos
 
+Login Widget [Source Code 💻](https://github.com/zouhir/preact-habitat/tree/master/examples/login-form)
+
+Login Widget Integration pen [Codepen Demo 🖋](https://codepen.io/zouhir/pen/brrOPB?editors=1000)
 
 ### Installation
 
