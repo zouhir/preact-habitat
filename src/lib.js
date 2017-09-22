@@ -42,7 +42,7 @@ const collectPropsFromElement = element => {
       if (!dataAttrName || typeof dataAttrName !== "string") {
         return false;
       }
-      let propName = dataAttrName.split(/(data-props?-)/).pop();
+      let propName = dataAttrName.split(/(data-props?-)/).pop() || '';
       propName = camelcasize(propName);
       if (dataAttrName !== propName) {
         let propValue = attrs[key].nodeValue;
@@ -90,14 +90,13 @@ const getHabitatSelectorFromClient = (currentScript) => {
  * @return {Array}        Array of matching habitats
  */
 const widgetDOMHostElements = (
-  { selector, inline, clientSpecified, clean}
+  { selector, inline, clientSpecified}
 ) => {
   let hostNodes = [];
   let currentScript = getExecutedScript();
 
   if (inline === true) {
     let parentNode = currentScript.parentNode;
-    if (clean) node.innerHTML = "";
     hostNodes.push(parentNode);
   }
   if (clientSpecified === true && !selector) {
@@ -106,7 +105,6 @@ const widgetDOMHostElements = (
   }
   if (selector) {
     [].forEach.call(document.querySelectorAll(selector), queriedTag => {
-      if (clean) queriedTag.innerHTML = "";
       hostNodes.push(queriedTag);
     });
   }
@@ -117,10 +115,17 @@ const widgetDOMHostElements = (
  * private _render function that will be queued if the DOM is not render
  * and executed immeidatly if DOM is ready
  */
-let _render = (widget, hostElements, root) => {
+let _render = (widget, hostElements, root, cleanRoot) => {
   hostElements.forEach(elm => {
     let hostNode = elm;
+    if (hostNode._habitat) {
+      return; 
+    }
+    hostNode._habitat = true;
     let props = collectPropsFromElement(elm) || {};
+    if(cleanRoot) {
+      hostNode.innerHTML = "";
+    }
     return preact.render(preact.h(widget, props), hostNode, root);
   });
 };
