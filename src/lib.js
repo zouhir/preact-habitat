@@ -51,7 +51,7 @@ const collectPropsFromElement = element => {
     }
   });
 
-  //check for child script text/props
+  // check for child script text/props
   [].forEach.call(element.getElementsByTagName('script'), scrp => {
     let propsObj = {}
     if(scrp.hasAttribute('type')) {
@@ -71,7 +71,7 @@ const collectPropsFromElement = element => {
 const getHabitatSelectorFromClient = (currentScript) => {
   let scriptTagAttrs = currentScript.attributes;
   let selector = null;
-  // ceck for another props attached to the tag
+  // check for another props attached to the tag
   Object.keys(scriptTagAttrs).forEach(key => {
     if (scriptTagAttrs.hasOwnProperty(key)) {
       const dataAttrName = scriptTagAttrs[key].name;
@@ -112,10 +112,10 @@ const widgetDOMHostElements = (
 };
 
 /**
- * private _render function that will be queued if the DOM is not render
+ * preact render function that will be queued if the DOM is not ready
  * and executed immeidatly if DOM is ready
  */
-let _render = (widget, hostElements, root, cleanRoot) => {
+const preactRender = (widget, hostElements, root, cleanRoot) => {
   hostElements.forEach(elm => {
     let hostNode = elm;
     if (hostNode._habitat) {
@@ -135,6 +135,6 @@ export {
   widgetDOMHostElements,
   getExecutedScript,
   camelcasize,
-  _render,
+  preactRender,
   getHabitatSelectorFromClient
 };
