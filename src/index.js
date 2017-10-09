@@ -1,4 +1,4 @@
-import { widgetDOMHostElements, _render } from "./lib";
+import { widgetDOMHostElements, preactRender } from "./lib";
 
 const habitat = Widget => {
   // Widget represents the Preact component we need to mount
@@ -26,7 +26,7 @@ const habitat = Widget => {
           inline,
           clientSpecified
         });
-        return _render(widget, elements, root, clean);
+        return preactRender(widget, elements, root, clean);
       }
     };
     loaded();
