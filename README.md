@@ -57,9 +57,10 @@ let habitat = habitat(WidgetAwesome);
 
 habitat.render({
   selector: '.some-class', // Searches and mounts in <div class="some-class"></div>
+  defaultProps: undefined, // Default props for all widgets
   inline: false,
   clean: false,
-  clientSpecified: false,
+  clientSpecified: false
 });
 ```
 
@@ -116,6 +117,12 @@ render function accepts an options Object which supports the following propertie
 >String: `.myclass`, `#myid`, `[data-selector="my-data-attr"]`
 
 DOM Element selector used to retrieve the DOM elements you want to mount the widget in
+
+#### option.defaultProps
+
+> Object: {} || undefined (default)
+
+Default props to be rendered throughout widgets, you can replace each value [declaring props](#passing-props).
 
 #### option.inline
 > Boolean: true || false (default)

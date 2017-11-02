@@ -11,7 +11,8 @@ const habitat = Widget => {
       selector = null,
       inline = false,
       clean = false,
-      clientSpecified = false
+      clientSpecified = false,
+      defaultProps
     } = {}
   ) => {
     let elements = widgetDOMHostElements({
@@ -26,7 +27,8 @@ const habitat = Widget => {
           inline,
           clientSpecified
         });
-        return preactRender(widget, elements, root, clean);
+
+        return preactRender(widget, elements, root, clean, defaultProps);
       }
     };
     loaded();
