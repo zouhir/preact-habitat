@@ -32,7 +32,7 @@ const getExecutedScript = () => {
  * @param  {Element} tag The host element
  * @return {Object}  props object to be passed to the component
  */
-const collectPropsFromElement = (element, props = Object.create({})) => {
+const collectPropsFromElement = (element, props = {}) => {
   let attrs = element.attributes;
 
   // collect from element
@@ -115,7 +115,7 @@ const widgetDOMHostElements = (
  * preact render function that will be queued if the DOM is not ready
  * and executed immeidatly if DOM is ready
  */
-const preactRender = (widget, hostElements, root, cleanRoot, defaultProps = Object.create({})) => {
+const preactRender = (widget, hostElements, root, cleanRoot, defaultProps = {}) => {
   hostElements.forEach(elm => {
     let hostNode = elm;
     if (hostNode._habitat) {
