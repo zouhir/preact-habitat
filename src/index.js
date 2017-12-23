@@ -12,7 +12,7 @@ const habitat = Widget => {
       inline = false,
       clean = false,
       clientSpecified = false,
-      defaultProps
+      defaultProps = {}
     } = {}
   ) => {
     let elements = widgetDOMHostElements({

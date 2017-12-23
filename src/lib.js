@@ -115,7 +115,7 @@ const widgetDOMHostElements = (
  * preact render function that will be queued if the DOM is not ready
  * and executed immeidatly if DOM is ready
  */
-const preactRender = (widget, hostElements, root, cleanRoot, defaultProps = {}) => {
+const preactRender = (widget, hostElements, root, cleanRoot, defaultProps) => {
   hostElements.forEach(elm => {
     let hostNode = elm;
     if (hostNode._habitat) {
