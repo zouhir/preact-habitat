@@ -36,7 +36,7 @@ const collectPropsFromElement = (element, defaultProps = {}) => {
   let attrs = element.attributes;
 
   let props = Object.assign({}, defaultProps);
-  
+
   // collect from element
   Object.keys(attrs).forEach(key => {
     if (attrs.hasOwnProperty(key)) {
