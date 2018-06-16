@@ -101,7 +101,7 @@ const widgetDOMHostElements = (
   }
   if (clientSpecified === true && !selector) {
     // user did not specify where to mount - get it from script tag attributes
-    selector = `[data-widget='${getHabitatSelectorFromClient(currentScript)}']`
+    selector = getHabitatSelectorFromClient(currentScript);
   }
   if (selector) {
     [].forEach.call(document.querySelectorAll(selector), queriedTag => {
