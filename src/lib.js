@@ -32,8 +32,10 @@ const getExecutedScript = () => {
  * @param  {Element} tag The host element
  * @return {Object}  props object to be passed to the component
  */
-const collectPropsFromElement = (element, props = {}) => {
+const collectPropsFromElement = (element, defaultProps = {}) => {
   let attrs = element.attributes;
+
+  let props = Object.assign({}, defaultProps);
 
   // collect from element
   Object.keys(attrs).forEach(key => {
