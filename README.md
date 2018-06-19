@@ -33,7 +33,7 @@ npm install --save preact-habitat
 - 2 ways to passing props from DOM.
 - Multiple rendering options.
 - Light weight ( < 1KB ).
-- Compatible with React widgetes through preact-compat.
+- Compatible with React widgets through preact-compat.
 - In use in high traffic web applications.
 
 ### Basic Usage Example
@@ -42,7 +42,7 @@ npm install --save preact-habitat
 import habitat from 'preact-habitat';
 import WidgetAwesome from './components/WidgetAwesome';
 
-let habitat = habitat(WidgetAwesome);
+const { render } = habitat(WidgetAwesome);
 
 /**
 ** other selecors options:
@@ -55,7 +55,7 @@ let habitat = habitat(WidgetAwesome);
 **
 **/
 
-habitat.render({
+render({
   selector: '.some-class', // Searches and mounts in <div class="some-class"></div>
   defaultProps: undefined, // Default props for all widgets
   inline: false,
@@ -99,11 +99,11 @@ accepts a single Preact component as its only argument
 import { h } form 'preact';
 import habitat from 'preact-habitat';
 
-const Widget = () => (<h1>Hello, World!</h1>)
+const Widget = () => <h1>Hello, World!</h1>;
 
-let habitat = habitat(Widget); // NOTE: pass Widget and not <Widget />
+const { render } = habitat(Widget); // NOTE: pass Widget and not <Widget />
 
-habitat.render({
+render({
   ...
 });
 ```
