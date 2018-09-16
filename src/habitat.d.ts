@@ -31,7 +31,16 @@ declare module "preact-habitat" {
     clientSpecified?: boolean;
   }
   interface IHabitat {
+    /**
+     * Renders the preact component into the DOM.
+     * @param config Configuration object
+     */
     render(config: IHabitatRenderConfig): void;
   }
+  /**
+   * A 900 Bytes module for that will make plugging in Preact components and
+   * widgets in any CMS or website as fun as lego!
+   * @param widget {ComponentFactory} Component to plug
+   */
   export default function habitat<P>(widget: ComponentFactory<P>): IHabitat;
 }
