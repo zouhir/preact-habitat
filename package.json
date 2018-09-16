@@ -8,6 +8,7 @@
   "main:umd": "dist/preact-habitat.umd.js",
   "jsnext:main": "dist/preact-habitat.es.js",
   "homepage": "https://github.com/zouhir/preact-habitat/",
+  "types": "src/habitat.d.ts",
   "author": {
     "name": "Zouhir Chahoud",
     "email": "zouhir@zouhir.org",
