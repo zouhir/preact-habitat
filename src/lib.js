@@ -1,4 +1,5 @@
-import preact from "preact";
+import preact from 'preact';
+
 /**
  * Removes `-` fron a string and capetalize the letter after
  * example: data-props-hello-world =>  dataPropsHelloWorld
@@ -21,7 +22,7 @@ const getExecutedScript = () => {
   return (
     document.currentScript ||
     (() => {
-      let scripts = document.getElementsByTagName("script");
+      let scripts = document.getElementsByTagName('script');
       return scripts[scripts.length - 1];
     })()
   );
@@ -41,7 +42,7 @@ const collectPropsFromElement = (element, defaultProps = {}) => {
   Object.keys(attrs).forEach(key => {
     if (attrs.hasOwnProperty(key)) {
       let dataAttrName = attrs[key].name;
-      if (!dataAttrName || typeof dataAttrName !== "string") {
+      if (!dataAttrName || typeof dataAttrName !== 'string') {
         return false;
       }
       let propName = dataAttrName.split(/(data-props?-)/).pop() || '';
@@ -55,17 +56,19 @@ const collectPropsFromElement = (element, defaultProps = {}) => {
 
   // check for child script text/props
   [].forEach.call(element.getElementsByTagName('script'), scrp => {
-    let propsObj = {}
-    if(scrp.hasAttribute('type')) {
-      if (scrp.getAttribute('type') !== 'text/props' ) return;
+    let propsObj = {};
+    if (scrp.hasAttribute('type')) {
+      if (scrp.getAttribute('type') !== 'text/props') {
+        return;
+      }
       try {
         propsObj = JSON.parse(scrp.innerHTML);
-      } catch(e) {
+      } catch (e) {
         throw new Error(e)
       }
       Object.assign(props, propsObj)
     }
-  });  
+  });
 
   return props;
 };
@@ -83,16 +86,16 @@ const getHabitatSelectorFromClient = (currentScript) => {
     }
   });
   return selector
-}
+};
 
 /**
  * Return array of 0 or more elements that will host our widget
  * @param  {id} attrId the data widget id attribute the host should have
- * @param  {document} scope  Docuemnt object or DOM Element as a scope
+ * @param  {document} scope Document object or DOM Element as a scope
  * @return {Array}        Array of matching habitats
  */
 const widgetDOMHostElements = (
-  { selector, inline, clientSpecified}
+  { selector, inline, clientSpecified }
 ) => {
   let hostNodes = [];
   let currentScript = getExecutedScript();
@@ -115,18 +118,18 @@ const widgetDOMHostElements = (
 
 /**
  * preact render function that will be queued if the DOM is not ready
- * and executed immeidatly if DOM is ready
+ * and executed immediately if DOM is ready
  */
 const preactRender = (widget, hostElements, root, cleanRoot, defaultProps) => {
   hostElements.forEach(elm => {
     let hostNode = elm;
     if (hostNode._habitat) {
-      return; 
+      return;
     }
     hostNode._habitat = true;
     let props = collectPropsFromElement(elm, defaultProps) || defaultProps;
-    if(cleanRoot) {
-      hostNode.innerHTML = "";
+    if (cleanRoot) {
+      hostNode.innerHTML = '';
     }
     return preact.render(preact.h(widget, props), hostNode, root);
   });

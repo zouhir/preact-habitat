@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "standard",
+    "standard-preact"
+  ],
+  "plugins": [
+    "jest"
+  ],
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest/globals": true
+  },
+  "rules": {
+    "semi": "off"
+  }
+}
