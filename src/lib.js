@@ -120,7 +120,7 @@ const widgetDOMHostElements = (
  * preact render function that will be queued if the DOM is not ready
  * and executed immediately if DOM is ready
  */
-const preactRender = (widget, hostElements, root, cleanRoot, defaultProps) => {
+const preactRender = (widget, hostElements, root, cleanRoot, defaultProps, component) => {
   hostElements.forEach(elm => {
     let hostNode = elm;
     if (hostNode._habitat) {
@@ -130,6 +130,15 @@ const preactRender = (widget, hostElements, root, cleanRoot, defaultProps) => {
     let props = collectPropsFromElement(elm, defaultProps) || defaultProps;
     if (cleanRoot) {
       hostNode.innerHTML = '';
+    }
+    if (component) {
+      props.ref = function (ref) {
+        if (typeof component === 'string') {
+          window[component] = ref;
+        } else if (typeof component === 'object') {
+          Object.assign(component, ref);
+        }
+      };
     }
     return preact.render(preact.h(widget, props), hostNode, root);
   });

@@ -18,7 +18,7 @@ class TitleComponent extends Component {
       <h1 className='test'>
         {TEST_TITLE}
       </h1>
-    );
+    )
   }
 }
 
@@ -64,7 +64,7 @@ describe('Habitat Client Control Renderer', () => {
     document.body.innerHTML = `
       <div data-widget-tv="tv-player"></div>
       <div data-widget-tv="tv-player"></div>
-    `
+    `;
     let hb = habitat(TitleComponent);
     hb.render({ selector: '[data-widget-tv="tv-player"]' });
 
@@ -76,7 +76,7 @@ describe('Habitat Client Control Renderer', () => {
   it('should render 1 widget and not clean its content', () => {
     document.body.innerHTML = `
       <div data-table-widget="datatable">LOADING BIG TABLE</div>
-    `
+    `;
     let hb = habitat(TitleComponent);
     hb.render({ selector: '[data-table-widget="datatable"]' });
 
