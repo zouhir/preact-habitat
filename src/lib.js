@@ -129,11 +129,11 @@ const preactRender = (widget, hostElements, root, cleanRoot, defaultProps, compo
       hostNode.innerHTML = '';
     }
     if (component) {
-      props.ref = function (ref) {
+      props.ref = function (compontentReference) {
         if (typeof component === 'string') {
-          window[component] = ref;
+          window[component] = compontentReference;
         } else if (typeof component === 'object') {
-          Object.assign(component, ref);
+          component.ref = compontentReference;
         }
       };
     }

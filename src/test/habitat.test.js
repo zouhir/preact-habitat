@@ -13,6 +13,16 @@ class TitleComponent extends Component {
   }
 }
 
+class TestComponent extends Component {
+  render() {
+    return (
+      <h1 className='another_test'>
+        {TEST_TITLE}
+      </h1>
+    )
+  }
+}
+
 describe('Module API Specs', () => {
   it('should export habitat factory function', () => {
     expect(typeof habitat).toBe('function');
@@ -47,6 +57,21 @@ describe('Habitat Client Control Renderer', () => {
 
     let widgets = document.querySelectorAll('.test');
     expect(widgets.length).toBe(0);
+  });
+  it('should not render on existing habitat hostNode', () => {
+    document.body.innerHTML = `
+        <div data-widget="my-widget"></div>
+        `;
+    let hb = habitat(TitleComponent);
+    hb.render({ selector: '[data-widget="my-widget"]' });
+
+    let hb2 = habitat(TestComponent);
+    hb2.render({ selector: '[data-widget="my-widget"]' });
+
+    const widgetsNew = document.querySelectorAll('.another_test');
+    expect(widgetsNew.length).toBe(0);
+    const widgets = document.querySelectorAll('.test');
+    expect(widgets.length).toBe(1);
   });
   it('should render the widget in 3 habitat elements', () => {
     document.body.innerHTML = `
@@ -104,16 +129,17 @@ describe('Habitat Client Control Renderer', () => {
     let hb = habitat(TitleComponent);
     hb.render({ selector: '[data-widget="my-widget"]', component: 'testGlobal' });
 
+    expect(window.testGlobal).toMatchObject({ ...TitleComponent });
     expect(window.testGlobal).toBeInstanceOf(TitleComponent);
   });
   it('should pass component reference to local variable', () => {
-    var localTestReference = {};
+    var localTestReference = { ref: null };
     document.body.innerHTML = `
         <div data-widget="my-widget"></div>
         `;
     let hb = habitat(TitleComponent);
     hb.render({ selector: '[data-widget="my-widget"]', component: localTestReference });
 
-    expect(localTestReference).toMatchObject({ ...TitleComponent });
+    expect(localTestReference.ref).toBeInstanceOf(TitleComponent);
   });
 });
