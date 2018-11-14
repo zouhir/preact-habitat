@@ -15,7 +15,6 @@ const camelcasize = str => {
 
 /**
  * [getExecutedScript internal widget to provide the currently executed script]
- * @param  {document} document [Browser document object]
  * @return {HTMLElement}     [script Element]
  */
 const getExecutedScript = () => {
@@ -30,12 +29,12 @@ const getExecutedScript = () => {
 
 /**
  * Get the props from a host element's data attributes
- * @param  {Element} tag The host element
+ * @param  {Element} element The host element
+ * @param  {Object}  defaultProps
  * @return {Object}  props object to be passed to the component
  */
 const collectPropsFromElement = (element, defaultProps = {}) => {
   let attrs = element.attributes;
-
   let props = Object.assign({}, defaultProps);
 
   // collect from element
@@ -48,8 +47,7 @@ const collectPropsFromElement = (element, defaultProps = {}) => {
       let propName = dataAttrName.split(/(data-props?-)/).pop() || '';
       propName = camelcasize(propName);
       if (dataAttrName !== propName) {
-        let propValue = attrs[key].nodeValue;
-        props[propName] = propValue;
+        props[propName] = attrs[key].nodeValue;
       }
     }
   });
@@ -90,9 +88,8 @@ const getHabitatSelectorFromClient = (currentScript) => {
 
 /**
  * Return array of 0 or more elements that will host our widget
- * @param  {id} attrId the data widget id attribute the host should have
  * @param  {document} scope Document object or DOM Element as a scope
- * @return {Array}        Array of matching habitats
+ * @return {Array}    Array of matching habitats
  */
 const widgetDOMHostElements = (
   { selector, inline, clientSpecified }

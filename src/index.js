@@ -1,4 +1,4 @@
-import { widgetDOMHostElements, preactRender } from './lib';
+import { preactRender, widgetDOMHostElements } from './lib';
 
 const habitat = Widget => {
   // Widget represents the Preact component we need to mount

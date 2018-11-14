@@ -1,19 +1,10 @@
 import { h, Component } from 'preact';
-import simulant from 'simulant';
-
-import {
-  collectPropsFromElement,
-  widgetDOMHostElements,
-  getExecutedScript,
-  camelcasize
-} from '../lib';
-
 import habitat from '../index';
 
 const TEST_TITLE = 'Hello, World!';
 
 class TitleComponent extends Component {
-  render () {
+  render() {
     return (
       <h1 className='test'>
         {TEST_TITLE}
@@ -46,6 +37,16 @@ describe('Habitat Client Control Renderer', () => {
     let widgets = document.querySelectorAll('.test');
     expect(document.body.innerHTML).toContain(TEST_TITLE);
     expect(widgets.length).toBe(1);
+  });
+  it('should render nothing when no options are provided', () => {
+    document.body.innerHTML = `
+        <script></script>
+        `;
+    let hb = habitat(TitleComponent);
+    hb.render();
+
+    let widgets = document.querySelectorAll('.test');
+    expect(widgets.length).toBe(0);
   });
   it('should render the widget in 3 habitat elements', () => {
     document.body.innerHTML = `
@@ -84,5 +85,35 @@ describe('Habitat Client Control Renderer', () => {
     expect(document.body.innerHTML).toContain('LOADING BIG TABLE');
     expect(widgets[0].innerHTML).toContain(TEST_TITLE);
     expect(widgets.length).toBe(1);
+  });
+  it('should render 1 widget and clean its content', () => {
+    document.body.innerHTML = `
+      <div data-table-widget="datatable"><div className="oldElement" /></div>
+    `;
+    let hb = habitat(TitleComponent);
+    hb.render({ selector: '[data-table-widget="datatable"]', clean: true });
+
+    let widgets = document.querySelectorAll('.oldElement');
+    expect(widgets.length).toBe(0);
+  });
+  it('should pass component reference to global variable', () => {
+    window.testGlobal = null;
+    document.body.innerHTML = `
+        <div data-widget="my-widget"></div>
+        `;
+    let hb = habitat(TitleComponent);
+    hb.render({ selector: '[data-widget="my-widget"]', component: 'testGlobal' });
+
+    expect(window.testGlobal).toBeInstanceOf(TitleComponent);
+  });
+  it('should pass component reference to local variable', () => {
+    var localTestReference = {};
+    document.body.innerHTML = `
+        <div data-widget="my-widget"></div>
+        `;
+    let hb = habitat(TitleComponent);
+    hb.render({ selector: '[data-widget="my-widget"]', component: localTestReference });
+
+    expect(localTestReference).toMatchObject({ ...TitleComponent });
   });
 });

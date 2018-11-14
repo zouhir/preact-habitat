@@ -13,6 +13,7 @@
     "jest/globals": true
   },
   "rules": {
-    "semi": "off"
+    "semi": "off",
+    "react/react-in-jsx-scope": "off"
   }
 }
