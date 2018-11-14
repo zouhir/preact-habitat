@@ -129,7 +129,6 @@ describe('Habitat Client Control Renderer', () => {
     let hb = habitat(TitleComponent);
     hb.render({ selector: '[data-widget="my-widget"]', component: 'testGlobal' });
 
-    expect(window.testGlobal).toMatchObject({ ...TitleComponent });
     expect(window.testGlobal).toBeInstanceOf(TitleComponent);
   });
   it('should pass component reference to local variable', () => {
