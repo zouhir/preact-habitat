@@ -126,7 +126,7 @@ var widgetDOMHostElements = function (
  * preact render function that will be queued if the DOM is not ready
  * and executed immediately if DOM is ready
  */
-var preactRender = function (widget, hostElements, root, cleanRoot, defaultProps) {
+var preactRender = function (widget, hostElements, root, cleanRoot, defaultProps, component) {
   hostElements.forEach(function (elm) {
     var hostNode = elm;
     if (hostNode._habitat) {
@@ -136,6 +136,15 @@ var preactRender = function (widget, hostElements, root, cleanRoot, defaultProps
     var props = collectPropsFromElement(elm, defaultProps) || defaultProps;
     if (cleanRoot) {
       hostNode.innerHTML = '';
+    }
+    if (component) {
+      props.ref = function (ref) {
+        if (typeof component === 'string') {
+          window[component] = ref;
+        } else if (typeof component === 'object') {
+          Object.assign(component, ref);
+        }
+      };
     }
     return preact.render(preact.h(widget, props), hostNode, root);
   });
@@ -156,6 +165,7 @@ var habitat = function (Widget) {
     var clean = ref.clean; if ( clean === void 0 ) clean = false;
     var clientSpecified = ref.clientSpecified; if ( clientSpecified === void 0 ) clientSpecified = false;
     var defaultProps = ref.defaultProps; if ( defaultProps === void 0 ) defaultProps = {};
+    var component = ref.component; if ( component === void 0 ) component = null;
 
     var elements = widgetDOMHostElements({
       selector: selector,
@@ -170,7 +180,7 @@ var habitat = function (Widget) {
           clientSpecified: clientSpecified
         });
 
-        return preactRender(widget, elements$1, root, clean, defaultProps);
+        return preactRender(widget, elements$1, root, clean, defaultProps, component);
       }
     };
     loaded();
