@@ -1,4 +1,4 @@
-import preact from 'preact';
+import { h, render } from 'preact';
 
 /**
  * Removes `-` fron a string and capetalize the letter after
@@ -135,7 +135,7 @@ var preactRender = function (widget, hostElements, root, cleanRoot, defaultProps
     if(cleanRoot) {
       hostNode.innerHTML = "";
     }
-    return preact.render(preact.h(widget, props), hostNode, root);
+    return render(h(widget, props), hostNode, root);
   });
 };
 
@@ -145,7 +145,7 @@ var habitat = function (Widget) {
   // preact root render helper
   var root = null;
 
-  var render = function (
+  var render$$1 = function (
     ref
   ) {
     if ( ref === void 0 ) ref = {};
@@ -176,7 +176,7 @@ var habitat = function (Widget) {
     document.addEventListener("load", loaded);
   };
 
-  return { render: render };
+  return { render: render$$1 };
 };
 
 export default habitat;
