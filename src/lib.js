@@ -1,4 +1,4 @@
-import preact from "preact";
+import { h, render } from "preact";
 /**
  * Removes `-` fron a string and capetalize the letter after
  * example: data-props-hello-world =>  dataPropsHelloWorld
@@ -128,7 +128,7 @@ const preactRender = (widget, hostElements, root, cleanRoot, defaultProps) => {
     if(cleanRoot) {
       hostNode.innerHTML = "";
     }
-    return preact.render(preact.h(widget, props), hostNode, root);
+    return render(h(widget, props), hostNode, root);
   });
 };
 
