@@ -56,11 +56,15 @@ var collectPropsFromElement = function (element, defaultProps) {
     }
   });
 
-  // check for child script text/props
+  // check for child script text/props or application/json
   [].forEach.call(element.getElementsByTagName('script'), function (scrp) {
     var propsObj = {};
     if(scrp.hasAttribute('type')) {
-      if (scrp.getAttribute('type') !== 'text/props' ) { return; }
+      if (
+        scrp.getAttribute("type") !== "text/props" &&
+        scrp.getAttribute("type") !== "application/json"
+      )
+        { return; }
       try {
         propsObj = JSON.parse(scrp.innerHTML);
       } catch(e) {
