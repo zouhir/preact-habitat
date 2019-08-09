@@ -76,7 +76,7 @@ in the DOM you'd like to mount your widget in:
 
 ```html
 <div class="some-class"> <!-- as specified in render, habitat will mount the component in this-->
-  <script type="text/props">
+  <script type="application/json">
     {
       "title": "Widget Title passed as prop",
       "theme": "red",
@@ -171,15 +171,15 @@ This option allows who ever using the script to specifit the selector which they
 
 ### Passing Props
 
-There are 2 ways to pass props, either via data-attributes or text/props script tag
+There are 2 ways to pass props, either via data-attributes or application/json script tag
 
 #### via props script
 
-Simply add a `<script>` tag with `type="type/props" and ensure the content is valid JSON. multiple script tags will be merged together and passed down.
+Simply add a `<script>` tag with `type="application/json"` or `type="text/props"` and ensure the content is valid JSON. multiple script tags will be merged together and passed down.
 
 ```html
 <div class="beautiful-container" data-prop-name="preact habitat" data-prop-version="v3.0.0" data-prop-theme-color="green">
-  <script type="text/props">
+  <script type="application/json">
     {
       "name": "preact habitat",
       "version":"v3.0.0",
