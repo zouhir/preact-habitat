@@ -126,6 +126,32 @@ describe('Helper utility: collecting Client DOM props with collectPropsFromEleme
     expect(propsObj).toEqual(expectedProps);
   });
 
+
+  it('should collect props from application/json script', () => {
+    document.body.innerHTML = `
+      <div id="parent" data-props-name="preact">
+        <script type="application/json">
+          {
+            "name": "zouhir"
+          }
+        </script>
+
+        <script type="text/javascript">
+
+        </script>
+      </div>
+    `
+    const habitatDiv = document.getElementById('parent');
+    
+    const propsObj = collectPropsFromElement(habitatDiv);
+
+    const expectedProps = {
+      "name": "zouhir"
+    }
+    // document must find current script tag
+    expect(propsObj).toEqual(expectedProps);
+  });
+
   it('should collect props from prop script and merge with default props', () => {
     document.body.innerHTML = `
       <div id="parent" data-props-name="preact">
