@@ -27,7 +27,7 @@ export default class Widget extends Component {
               mesage={this.props.message}
               handleAuth={this.handleAuth}
             />
-          : <Welcome />}
+          : <p>Welcome</p>}
       </div>
     );
   }
