@@ -47,7 +47,7 @@ var collectPropsFromElement = function (element, defaultProps) {
       if (!dataAttrName || typeof dataAttrName !== "string") {
         return false;
       }
-      var propName = dataAttrName.split(/(data-props?-)/).pop() || '';
+      var propName = dataAttrName.split(/(data-props?-)/).pop() || "";
       propName = camelcasize(propName);
       if (dataAttrName !== propName) {
         var propValue = attrs[key].nodeValue;
@@ -57,9 +57,9 @@ var collectPropsFromElement = function (element, defaultProps) {
   });
 
   // check for child script text/props or application/json
-  [].forEach.call(element.getElementsByTagName('script'), function (scrp) {
+  [].forEach.call(element.getElementsByTagName("script"), function (scrp) {
     var propsObj = {};
-    if(scrp.hasAttribute('type')) {
+    if (scrp.hasAttribute("type")) {
       if (
         scrp.getAttribute("type") !== "text/props" &&
         scrp.getAttribute("type") !== "application/json"
@@ -67,12 +67,12 @@ var collectPropsFromElement = function (element, defaultProps) {
         { return; }
       try {
         propsObj = JSON.parse(scrp.innerHTML);
-      } catch(e) {
-        throw new Error(e)
+      } catch (e) {
+        throw new Error(e);
       }
       Object.assign(props, propsObj);
     }
-  });  
+  });
 
   return props;
 };
@@ -84,12 +84,12 @@ var getHabitatSelectorFromClient = function (currentScript) {
   Object.keys(scriptTagAttrs).forEach(function (key) {
     if (scriptTagAttrs.hasOwnProperty(key)) {
       var dataAttrName = scriptTagAttrs[key].name;
-      if (dataAttrName === 'data-mount-in') {
+      if (dataAttrName === "data-mount-in") {
         selector = scriptTagAttrs[key].nodeValue;
       }
     }
   });
-  return selector
+  return selector;
 };
 
 /**
@@ -98,9 +98,7 @@ var getHabitatSelectorFromClient = function (currentScript) {
  * @param  {document} scope  Docuemnt object or DOM Element as a scope
  * @return {Array}        Array of matching habitats
  */
-var widgetDOMHostElements = function (
-  ref
-) {
+var widgetDOMHostElements = function (ref) {
   var selector = ref.selector;
   var inline = ref.inline;
   var clientSpecified = ref.clientSpecified;
@@ -128,16 +126,32 @@ var widgetDOMHostElements = function (
  * preact render function that will be queued if the DOM is not ready
  * and executed immeidatly if DOM is ready
  */
-var preactRender = function (widget, hostElements, root, cleanRoot, defaultProps) {
+var preactRender = function (
+  widget,
+  hostElements,
+  root,
+  cleanRoot,
+  defaultProps,
+  component
+) {
   hostElements.forEach(function (elm) {
     var hostNode = elm;
     if (hostNode._habitat) {
-      return; 
+      return;
     }
     hostNode._habitat = true;
     var props = collectPropsFromElement(elm, defaultProps) || defaultProps;
-    if(cleanRoot) {
+    if (cleanRoot) {
       hostNode.innerHTML = "";
+    }
+    if (component) {
+      props.ref = function (compontentReference) {
+        if (typeof component === "string") {
+          window[component] = compontentReference;
+        } else if (typeof component === "object") {
+          component.ref = compontentReference;
+        }
+      };
     }
     return render(h(widget, props), hostNode, root);
   });
@@ -149,30 +163,36 @@ var habitat = function (Widget) {
   // preact root render helper
   var root = null;
 
-  var render$$1 = function (
-    ref
-  ) {
+  var render$$1 = function (ref) {
     if ( ref === void 0 ) ref = {};
     var selector = ref.selector; if ( selector === void 0 ) selector = null;
     var inline = ref.inline; if ( inline === void 0 ) inline = false;
     var clean = ref.clean; if ( clean === void 0 ) clean = false;
     var clientSpecified = ref.clientSpecified; if ( clientSpecified === void 0 ) clientSpecified = false;
     var defaultProps = ref.defaultProps; if ( defaultProps === void 0 ) defaultProps = {};
+    var component = ref.component; if ( component === void 0 ) component = null;
 
     var elements = widgetDOMHostElements({
       selector: selector,
       inline: inline,
-      clientSpecified: clientSpecified
+      clientSpecified: clientSpecified,
     });
     var loaded = function () {
       if (elements.length > 0) {
         var elements$1 = widgetDOMHostElements({
           selector: selector,
           inline: inline,
-          clientSpecified: clientSpecified
+          clientSpecified: clientSpecified,
         });
 
-        return preactRender(widget, elements$1, root, clean, defaultProps);
+        return preactRender(
+          widget,
+          elements$1,
+          root,
+          clean,
+          defaultProps,
+          component
+        );
       }
     };
     loaded();

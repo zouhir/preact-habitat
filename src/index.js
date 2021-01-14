@@ -1,34 +1,40 @@
 import { widgetDOMHostElements, preactRender } from "./lib";
 
-const habitat = Widget => {
+const habitat = (Widget) => {
   // Widget represents the Preact component we need to mount
   let widget = Widget;
   // preact root render helper
   let root = null;
 
-  let render = (
-    {
-      selector = null,
-      inline = false,
-      clean = false,
-      clientSpecified = false,
-      defaultProps = {}
-    } = {}
-  ) => {
+  let render = ({
+    selector = null,
+    inline = false,
+    clean = false,
+    clientSpecified = false,
+    defaultProps = {},
+    component = null,
+  } = {}) => {
     let elements = widgetDOMHostElements({
       selector,
       inline,
-      clientSpecified
+      clientSpecified,
     });
     let loaded = () => {
       if (elements.length > 0) {
         let elements = widgetDOMHostElements({
           selector,
           inline,
-          clientSpecified
+          clientSpecified,
         });
 
-        return preactRender(widget, elements, root, clean, defaultProps);
+        return preactRender(
+          widget,
+          elements,
+          root,
+          clean,
+          defaultProps,
+          component
+        );
       }
     };
     loaded();

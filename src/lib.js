@@ -6,7 +6,7 @@ import { h, render } from "preact";
  * @param  {String} str string
  * @return {String} Capetalized string
  */
-const camelcasize = str => {
+const camelcasize = (str) => {
   return str.replace(/-([a-z])/gi, (all, letter) => {
     return letter.toUpperCase();
   });
@@ -38,13 +38,13 @@ const collectPropsFromElement = (element, defaultProps = {}) => {
   let props = Object.assign({}, defaultProps);
 
   // collect from element
-  Object.keys(attrs).forEach(key => {
+  Object.keys(attrs).forEach((key) => {
     if (attrs.hasOwnProperty(key)) {
       let dataAttrName = attrs[key].name;
       if (!dataAttrName || typeof dataAttrName !== "string") {
         return false;
       }
-      let propName = dataAttrName.split(/(data-props?-)/).pop() || '';
+      let propName = dataAttrName.split(/(data-props?-)/).pop() || "";
       propName = camelcasize(propName);
       if (dataAttrName !== propName) {
         let propValue = attrs[key].nodeValue;
@@ -54,9 +54,9 @@ const collectPropsFromElement = (element, defaultProps = {}) => {
   });
 
   // check for child script text/props or application/json
-  [].forEach.call(element.getElementsByTagName('script'), scrp => {
-    let propsObj = {}
-    if(scrp.hasAttribute('type')) {
+  [].forEach.call(element.getElementsByTagName("script"), (scrp) => {
+    let propsObj = {};
+    if (scrp.hasAttribute("type")) {
       if (
         scrp.getAttribute("type") !== "text/props" &&
         scrp.getAttribute("type") !== "application/json"
@@ -64,12 +64,12 @@ const collectPropsFromElement = (element, defaultProps = {}) => {
         return;
       try {
         propsObj = JSON.parse(scrp.innerHTML);
-      } catch(e) {
-        throw new Error(e)
+      } catch (e) {
+        throw new Error(e);
       }
-      Object.assign(props, propsObj)
+      Object.assign(props, propsObj);
     }
-  });  
+  });
 
   return props;
 };
@@ -78,16 +78,16 @@ const getHabitatSelectorFromClient = (currentScript) => {
   let scriptTagAttrs = currentScript.attributes;
   let selector = null;
   // check for another props attached to the tag
-  Object.keys(scriptTagAttrs).forEach(key => {
+  Object.keys(scriptTagAttrs).forEach((key) => {
     if (scriptTagAttrs.hasOwnProperty(key)) {
       const dataAttrName = scriptTagAttrs[key].name;
-      if (dataAttrName === 'data-mount-in') {
+      if (dataAttrName === "data-mount-in") {
         selector = scriptTagAttrs[key].nodeValue;
       }
     }
   });
-  return selector
-}
+  return selector;
+};
 
 /**
  * Return array of 0 or more elements that will host our widget
@@ -95,9 +95,7 @@ const getHabitatSelectorFromClient = (currentScript) => {
  * @param  {document} scope  Docuemnt object or DOM Element as a scope
  * @return {Array}        Array of matching habitats
  */
-const widgetDOMHostElements = (
-  { selector, inline, clientSpecified}
-) => {
+const widgetDOMHostElements = ({ selector, inline, clientSpecified }) => {
   let hostNodes = [];
   let currentScript = getExecutedScript();
 
@@ -110,7 +108,7 @@ const widgetDOMHostElements = (
     selector = getHabitatSelectorFromClient(currentScript);
   }
   if (selector) {
-    [].forEach.call(document.querySelectorAll(selector), queriedTag => {
+    [].forEach.call(document.querySelectorAll(selector), (queriedTag) => {
       hostNodes.push(queriedTag);
     });
   }
@@ -121,16 +119,32 @@ const widgetDOMHostElements = (
  * preact render function that will be queued if the DOM is not ready
  * and executed immeidatly if DOM is ready
  */
-const preactRender = (widget, hostElements, root, cleanRoot, defaultProps) => {
-  hostElements.forEach(elm => {
+const preactRender = (
+  widget,
+  hostElements,
+  root,
+  cleanRoot,
+  defaultProps,
+  component
+) => {
+  hostElements.forEach((elm) => {
     let hostNode = elm;
     if (hostNode._habitat) {
-      return; 
+      return;
     }
     hostNode._habitat = true;
     let props = collectPropsFromElement(elm, defaultProps) || defaultProps;
-    if(cleanRoot) {
+    if (cleanRoot) {
       hostNode.innerHTML = "";
+    }
+    if (component) {
+      props.ref = function (compontentReference) {
+        if (typeof component === "string") {
+          window[component] = compontentReference;
+        } else if (typeof component === "object") {
+          component.ref = compontentReference;
+        }
+      };
     }
     return render(h(widget, props), hostNode, root);
   });
@@ -142,5 +156,5 @@ export {
   getExecutedScript,
   camelcasize,
   preactRender,
-  getHabitatSelectorFromClient
+  getHabitatSelectorFromClient,
 };
