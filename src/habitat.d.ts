@@ -5,7 +5,7 @@ declare module "preact-habitat" {
      * DOM Element selector used to retrieve the DOM elements you want to mount
      * the widget in.
      */
-    selector: string;
+    selector?: string;
     /**
      * Default props to be rendered throughout widgets, you can replace each
      * value declaring props.
