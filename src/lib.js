@@ -124,6 +124,9 @@ const widgetDOMHostElements = (
 const preactRender = (widget, hostElements, root, cleanRoot, defaultProps) => {
   hostElements.forEach(elm => {
     let hostNode = elm;
+    if (!hostNode) {
+      return;
+    }
     if (hostNode._habitat) {
       return; 
     }
