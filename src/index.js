@@ -12,20 +12,23 @@ const habitat = Widget => {
       inline = false,
       clean = false,
       clientSpecified = false,
+      scriptFallback = true,
       defaultProps = {}
     } = {}
   ) => {
     let elements = widgetDOMHostElements({
       selector,
       inline,
-      clientSpecified
+      clientSpecified,
+      scriptFallback
     });
     let loaded = () => {
       if (elements.length > 0) {
         let elements = widgetDOMHostElements({
           selector,
           inline,
-          clientSpecified
+          clientSpecified,
+          scriptFallback
         });
 
         return preactRender(widget, elements, root, clean, defaultProps);

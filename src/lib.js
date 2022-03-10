@@ -17,10 +17,14 @@ const camelcasize = str => {
  * @param  {document} document [Browser document object]
  * @return {HTMLElement}     [script Element]
  */
-const getExecutedScript = () => {
+const getExecutedScript = (fallback = true) => {
   return (
     document.currentScript ||
     (() => {
+      if (!fallback) {
+        throw new Error('currentScript not found');
+      }
+
       let scripts = document.getElementsByTagName("script");
       return scripts[scripts.length - 1];
     })()
@@ -96,10 +100,10 @@ const getHabitatSelectorFromClient = (currentScript) => {
  * @return {Array}        Array of matching habitats
  */
 const widgetDOMHostElements = (
-  { selector, inline, clientSpecified}
+  { selector, inline, clientSpecified, scriptFallback }
 ) => {
   let hostNodes = [];
-  let currentScript = getExecutedScript();
+  let currentScript = getExecutedScript(scriptFallback);
 
   if (inline === true) {
     let parentNode = currentScript.parentNode;
